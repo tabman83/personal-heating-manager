@@ -1,0 +1,26 @@
+{
+  "name": "personal-heater-manager",
+  "version": "0.0.1",
+  "description": "A personal heater manager system with Arduino and Raspberry Pi.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tabman83/personal-heater-manager.git"
+  },
+  "keywords": [
+    "heater"
+  ],
+  "author": "Antonino Parisi",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/tabman83/personal-heater-manager/issues"
+  },
+  "homepage": "https://github.com/tabman83/personal-heater-manager",
+  "dependencies": {
+    "hapi": "^8.2.0",
+    "mongoose": "^3.8.23"
+  }
+}
