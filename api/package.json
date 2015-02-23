@@ -21,6 +21,7 @@
   "homepage": "https://github.com/tabman83/personal-heater-manager",
   "dependencies": {
     "hapi": "^8.2.0",
+    "joi": "^5.1.0",
     "mongoose": "^3.8.23"
   }
 }
