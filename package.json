@@ -22,7 +22,8 @@
   "dependencies": {
     "hapi": "^8.2.0",
     "joi": "^5.1.0",
-    "mongoose": "^3.8.23"
+    "mongoose": "^3.8.23",
+    "nconf": "^0.7.1"
   },
   "devDependencies": {
     "autoprefixer-core": "^4.0.2",
