@@ -20,8 +20,14 @@
             });
 
             //$locationProvider.html5Mode(true);
-        }]).run(function() {
+        }]).run(['$rootScope', '$window', function($rootScope, $window) {
 
-        });
+            // Hook success
+            $rootScope.$on('$routeChangeSuccess', function() {
+                // display new view from top
+                $window.scrollTo(0, 0);
+            });
+
+        }]);
 
 })(angular);

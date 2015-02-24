@@ -23,20 +23,37 @@
           <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <div class="container">
-            <div class="header">
-                <ul class="nav nav-pills pull-right">
-                    <li active-class="active"><a href="#/status">Status</a></li>
-                    <li active-class="active"><a href="#/timer">Timer</a></li>
-                </ul>
-                <h3 class="text-muted">PHM by Nino</h3>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">PHM</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li active-class="active" class="hidden-xs"><a href="#/status">Status</a></li>
+                        <li active-class="active" class="hidden-xs"><a href="#/timer">Timer</a></li>
+                        <li active-class="active" class="visible-xs"><a href="#/status" data-toggle="collapse" data-target="#navbar">Status</a></li>
+                        <li active-class="active" class="visible-xs"><a href="#/timer" data-toggle="collapse" data-target="#navbar">Timer</a></li>
+                    </ul>
+                </div>
             </div>
+        </nav>
+
+        <div class="container">
 
             <div ng-view ></div>
 
-            <div class="footer">
+            <hr>
+            <footer>
                 <p>Antonino Parisi | <a href="mailto:tabman83@gmail.com">tabman83@gmail.com</a></p>
-            </div>
+            </footer>
         </div>
 
         <!-- build:js scripts/vendor.js -->
