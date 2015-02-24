@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="">
+<html lang="" ng-app="PHMApp">
     <head>
         <meta charset="utf-8">
         <meta name="description" content="">
@@ -14,6 +14,7 @@
 
         <!-- build:css styles/main.css -->
         <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/bootstrap-switch.css">
         <!-- endbuild -->
 
     </head>
@@ -25,25 +26,13 @@
         <div class="container">
             <div class="header">
                 <ul class="nav nav-pills pull-right">
-                    <li class="active"><a href="#">Status</a></li>
-                    <li><a href="#">Timer</a></li>
+                    <li active-class="active"><a href="#/status">Status</a></li>
+                    <li active-class="active"><a href="#/timer">Timer</a></li>
                 </ul>
-                <h3 class="text-muted">PHM</h3>
+                <h3 class="text-muted">PHM by Nino</h3>
             </div>
 
-
-            <div class="row">
-                <div class="col-lg-12">
-                    <h4>HTML5 Boilerplate</h4>
-                    <p>HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.</p>
-
-                    <h4>Sass</h4>
-                    <p>Sass is the most mature, stable, and powerful professional grade CSS extension language in the world.</p>
-
-                    <h4>Bootstrap</h4>
-                    <p>Sleek, intuitive, and powerful mobile first front-end framework for faster and easier web development.</p>
-                </div>
-            </div>
+            <div ng-view ></div>
 
             <div class="footer">
                 <p>Antonino Parisi | <a href="mailto:tabman83@gmail.com">tabman83@gmail.com</a></p>
@@ -69,10 +58,18 @@
         <script src="/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js"></script>
         <script src="/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/collapse.js"></script>
         <script src="/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/tab.js"></script>
+
+        <script src="/bower_components/flotcharts/jquery.flot.js"></script>
+        <script src="/bower_components/angular/angular.js"></script>
+        <script src="/bower_components/angular-route/angular-route.js"></script>
+        <script src="/bower_components/angular-flot/angular-flot.js"></script>
         <!-- endbuild -->
 
         <!-- build:js scripts/main.js -->
         <script src="scripts/main.js"></script>
+        <script src="scripts/bootstrap-switch.js"></script>
+        <script src="scripts/controllers/status.js"></script>
+        <script src="scripts/directives/active-class.js"></script>
         <!-- endbuild -->
 
     </body>
