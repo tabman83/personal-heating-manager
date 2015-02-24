@@ -7,12 +7,13 @@ var routes = [{
 	method: 'POST',
 	path: '/humidities',
 	config: {
-		handler: humidityController.insertHumidity.bind(humidityController),
-		validate: {
-			payload: {
-				value: Joi.number().precision(2).min(1).max(5)
-			} 
-		}
+		handler: humidityController.insertHumidity.bind(humidityController)
+	}
+}, {
+	method: 'GET',
+	path: '/humidities',
+	config: {
+		handler: humidityController.getHumidity.bind(humidityController)
 	}
 }];
 

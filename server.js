@@ -38,14 +38,6 @@ mongoose.connection.once('open', function (callback) {
     // Start the server
     server.start(function() {
         console.log("personal-heater-manager server started @ " + server.info.uri);
-
-        var TemperaturePoint = require('./models/temperaturePoint');
-        var temperaturePoint = new TemperaturePoint({ value: 24.81 });
-        temperaturePoint.save(function (err) {
-          if (err) {
-              console.log(err);
-          }
-        });
     });
 });
 

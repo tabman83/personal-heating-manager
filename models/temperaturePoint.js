@@ -13,7 +13,7 @@ var temperaturePointSchema = mongoose.Schema({
 	date: {
 		type: Date,
 		default: Date.now
-	}
+	},
 });
 
 var TemperaturePoint = mongoose.model('TemperaturePoint', temperaturePointSchema);

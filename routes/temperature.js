@@ -7,12 +7,13 @@ var routes = [{
 	method: 'POST',
 	path: '/temperatures',
 	config: {
-		handler: temperatureController.insertTemperature.bind(temperatureController),
-		validate: {
-			payload: {
-				value: Joi.number().precision(2).min(1).max(5)
-			} 
-		}
+		handler: temperatureController.insertTemperature.bind(temperatureController)
+	}
+}, {
+	method: 'GET',
+	path: '/temperatures',
+	config: {
+		handler: temperatureController.getTemperature.bind(temperatureController)
 	}
 }];
 
