@@ -20,9 +20,12 @@
   },
   "homepage": "https://github.com/tabman83/personal-heater-manager",
   "dependencies": {
+    "async": "^0.9.0",
     "hapi": "^8.2.0",
     "joi": "^5.1.0",
     "mongoose": "~3.8.23",
+    "mosca": "^0.28.1",
+    "mqtt": "^1.0.10",
     "nconf": "^0.7.1"
   },
   "devDependencies": {
