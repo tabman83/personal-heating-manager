@@ -26,6 +26,16 @@ body {
     padding-bottom: 20px;
 }
 
+.row {
+    display: flex;
+
+    .col-xs-6 {
+        flex-grow: 1;
+        display: flex;
+    }
+}
+
+
 $color_purple: #5133AB;
 $color_red: #AC193D;
 $color_orange: #DC572E;
@@ -54,7 +64,6 @@ h1, h2, h3, h4, h5, h6 {
 strong {
   font-weight: 400;
 }
-
 .tile {
     width: 100%;
 	display: inline-block;
@@ -109,5 +118,20 @@ strong {
 		&:hover {
 			background: darken($color_orange, 10%);
 		}
+    }
+}
+
+.tile {
+    display: flex;
+    flex-direction: column;
+    min-height: 140px;
+
+    h1,h2,h3,h4,h5,p {
+        display: flex;
+        margin: 0px;
+        padding: 0px;
+    }
+    h1,h2,h3,h4,h5 {
+        flex-grow: 1;
     }
 }
