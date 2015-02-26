@@ -1,5 +1,48 @@
-<div class="row" ng-controller="StatusController">
-    <div class="col-lg-12">
-        <flot dataset="myData" options="myChartOptions" width="100%" height="200"></flot>
+<div ng-controller="StatusController">
+
+
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="tile green">
+                <h1 class="title">ON</h1>
+                <p>HEATING STATUS</p>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="tile red">
+                <h3 class="title">OFF in 12 min</h3>
+                <p>NEXT EVENT</p>
+            </div>
+        </div>
     </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="tile blue">
+                <h1 class="title">25.2 &deg;</h1>
+                <p>INSIDE temperature</p>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="tile orange">
+                <h1 class="title">6 &deg;</h1>
+                <p>OUTSIDE temperature</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="tile green">
+                <h1 class="title">78 %</h1>
+                <p>INSIDE humidity</p>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="tile purple">
+                <h1 class="title">80 %</h1>
+                <p>OUTSIDE humidity</p>
+            </div>
+        </div>
+    </div>
+
 </div>

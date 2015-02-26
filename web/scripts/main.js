@@ -10,9 +10,11 @@
 
     angular
         .module('PHMApp', ['ngRoute', 'angular-flot'])
-        .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+        .config(['$routeProvider', function($routeProvider) {
             $routeProvider.when('/status', {
                 templateUrl: '/views/status.html'
+            }).when('/stats', {
+                templateUrl: 'views/stats.html'
             }).when('/timer', {
                 templateUrl: 'views/timer.html'
             }).otherwise({
