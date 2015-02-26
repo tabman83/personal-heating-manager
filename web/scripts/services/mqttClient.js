@@ -51,8 +51,20 @@
                 });
             }
 
+            this.publish = function(queueName, message) {
+                connectionEstablishedDefer.promise.then( function() {
+                    var pahoMessage = new Paho.MQTT.Message("Hello");
+                    pahoMessage.destinationName = queueName;
+                    client.send(pahoMessage);
+                });
+            }
+
             this.unsubscribe = function(handler) {
                 handlers[handler.queueName].splice(handler.index, 1);
+                if(handlers[handler.queueName].length === 0 ) {
+                    client.unsubscribe(handler.queueName);
+                    delete handlers[handler.queueName];
+                }
             }
 
             this.subscribe = function(queueName, callback) {
