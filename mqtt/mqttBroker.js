@@ -7,10 +7,15 @@ description:    MQTT broker wrapper
 */
 
 var mosca = require('mosca');
+var nconf = require('nconf');
 
 var moscaServer = null;
 
 module.exports = {
+
+    getServer: function() {
+        return moscaServer;
+    },
 
     startMqttBroker: function(cb) {
         var pubsubsettings = {
@@ -22,12 +27,17 @@ module.exports = {
         };
 
         var moscaSettings = {
+            http: {
+                port: nconf.get('mqtt_ws_port') || 3001,
+                bundle: true,
+                static: './'
+            },
             port: 1883,           //mosca (mqtt) port
             backend: pubsubsettings   //pubsubsettings is the object we created above
         };
 
-        // mqtt publish -h localhost -t 'test' -m '25'
-        // mqtt subscribe -v -h localhost -t 'test'
+        // mqtt publish -h localhost -t temperature -m '25'
+        // mqtt subscribe -v -h localhost -t temperature
 
         function onMoscaServerReady() {
             console.log('MQTT broker is up and running.');
