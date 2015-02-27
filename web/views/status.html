@@ -1,10 +1,10 @@
-<div ng-controller="StatusController">
+<div ng-controller="StatusController" class="status-view">
 
 
     <div class="row">
         <div class="col-xs-6">
             <div class="tile green">
-                <h1 class="title">ON</h1>
+                <h1 class="title">{{heaterStatus}}</h1>
                 <p>HEATING STATUS</p>
             </div>
         </div>
@@ -19,28 +19,29 @@
     <div class="row">
         <div class="col-xs-6">
             <div class="tile blue">
-                <h1 class="title">{{insideTemp}} &deg;</h1>
-                <p>INSIDE temperature</p>
+                <h1 class="title">{{insideTemp}}&deg;</h1>
+                <p>INSIDE temp.</p>
             </div>
         </div>
         <div class="col-xs-6">
             <div class="tile orange">
-                <h1 class="title">6 &deg;</h1>
-                <p>OUTSIDE temperature</p>
+                <h1 class="title">{{outsideTemp}}&deg; <i class="wi {{weatherIcon}}"></i></h1>
+                <small>Feels like {{outsideWindChill}}&deg;</small>
+                <p>OUTSIDE temp.</p>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-6">
             <div class="tile green">
-                <h1 class="title">78 %</h1>
-                <p>INSIDE humidity</p>
+                <h1 class="title">{{insideHumidity}}%</h1>
+                <p>INSIDE hum.</p>
             </div>
         </div>
         <div class="col-xs-6">
             <div class="tile purple">
-                <h1 class="title">80 %</h1>
-                <p>OUTSIDE humidity</p>
+                <h1 class="title">{{outsideHumidity}}%</h1>
+                <p>OUTSIDE hum.</p>
             </div>
         </div>
     </div>

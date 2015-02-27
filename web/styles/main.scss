@@ -13,14 +13,12 @@ $icon-font-path: '../fonts/';
 
 /* Space out content a bit */
 $base_font_size: 14px;
-$base_line_height: 1.5em;
 $text_font_family: 'Open Sans', "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
 $display_font_family: 'Open Sans', "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
 
 body {
     font-family: $text_font_family;
     font-size: $base_font_size;
-    line-height: $base_line_height;
     font-weight: 400;
     padding-top: 70px;
     padding-bottom: 20px;
@@ -57,7 +55,6 @@ strong {
 
 h1, h2, h3, h4, h5, h6 {
 	font-family: $display_font_family;
-	line-height: $base_line_height;
 	font-weight: 300;
 }
 
@@ -69,7 +66,7 @@ strong {
 	display: inline-block;
 	box-sizing: border-box;
 	background: #fff;
-	padding: 20px;
+	padding: 17px;
 	margin-bottom: 30px;
 
     .title {
@@ -127,11 +124,20 @@ strong {
     min-height: 140px;
 
     h1,h2,h3,h4,h5,p {
-        display: flex;
         margin: 0px;
         padding: 0px;
     }
-    h1,h2,h3,h4,h5 {
+    >:nth-last-child(2) {
+        display: flex;
         flex-grow: 1;
+    }
+}
+
+.status-view {
+    .col-xs-6:first-child {
+        padding-right:10px;
+    }
+    .col-xs-6:last-child {
+        padding-left:10px;
     }
 }

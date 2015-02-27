@@ -8,14 +8,14 @@
 (function(angular, undefined) {
     'use strict';
 
-    angular.module('PHMApp').factory('mqttClient', ['$q', function($q) {
+    angular.module('PHMApp').factory('mqttClient', ['$q', '$timeout', 'appSettings', function($q, $timeout, appSettings) {
 
         var mqttClient = function() {
 
             console.log('mqttClient initialized');
             var handlers = {};
             var connectionEstablishedDefer = $q.defer();
-            var client = new Paho.MQTT.Client(location.hostname, 3001, 'webSocketClient');
+            var client = new Paho.MQTT.Client(location.hostname, appSettings.mqtt.port, 'webSocketClient');
 
             // set callback handlers
             client.onConnectionLost = onConnectionLost;
@@ -29,11 +29,6 @@
                 // Once a connection has been made, make a subscription and send a message.
                 console.log('WS MQTT connection successful.');
                 connectionEstablishedDefer.resolve();
-                /*
-                message = new Paho.MQTT.Message("Hello");
-                message.destinationName = "PHM/heater";
-                client.send(message);
-                */
             }
 
             // called when the client loses its connection
@@ -47,8 +42,8 @@
             function onMessageArrived(message) {
                 var callbacks = handlers[message.destinationName];
                 angular.forEach(callbacks, function(callback) {
-                    callback(message.payloadString);
-                });
+                    $timeout( callback.bind(this, message.payloadString) );
+                }, this);
             }
 
             this.publish = function(queueName, message) {
