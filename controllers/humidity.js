@@ -11,7 +11,10 @@ HumidityController.prototype = {
 		if( typeof(value) === 'number' ) {
 			reply( { message: '\'value\' parameter is not a number.' } ).code(301);
 		} else {
-			var humidityPoint = new HumidityPoint({ value: value });
+			var humidityPoint = new HumidityPoint({
+				value: value,
+				date: new Date
+			});
 			humidityPoint.save(function (err) {
 				if (err) {
 					console.error(err);
@@ -30,7 +33,14 @@ HumidityController.prototype = {
 			limit: 24*30;
 		}
 
-		var queryExec = function (err, humidityPoints) {
+		HumidityPoint
+			.find()
+			.sort({ date: 'desc' })
+			.select({ __v: 0 })
+			.limit(limit)
+			.exec(queryCallback);
+
+		function queryCallback(err, humidityPoints) {
 			if (err) {
 				console.error(err);
 				reply( { message: 'Cannot retrieve humidities.' } ).code(500);
@@ -38,13 +48,6 @@ HumidityController.prototype = {
 				reply(humidityPoints);
 			}
 		}
-
-		HumidityPoint
-			.find()
-			.sort({ date: 'desc' })
-			.select({ _id: 0, __v: 0 })
-			.limit(limit)
-			.exec(queryExec);
 	}
 
 

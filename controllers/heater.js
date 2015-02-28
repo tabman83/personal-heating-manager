@@ -1,26 +1,55 @@
 var mqttClient = require('../mqtt/mqttClient');
 var nconf = require('nconf');
 var heaterTopic = nconf.get('mqtt_topic_heater');
+var HeaterStatus = require('../models/HeaterStatus');
 
 function HeaterController() { }
 
 HeaterController.prototype = {
 
     setHeater: function (request, reply) {
+        if(request.payload.value === undefined) {
+            reply( { message: 'Missing parameter \'value\'.' } ).code(422);
+            return;
+        }
+
         var value = !!request.payload.value;
 		try {
 			mqttClient.publish(heaterTopic, value.toString());
-			reply( { message: 'Heater status successfully set.' } );
 		} catch( err ) {
 			console.error(err);
-			reply( { message: 'Cannot set Heater status.' } ).code(500);
+			reply( { message: 'Cannot publish the heater status.' } ).code(500);
+            return;
 		}
+
+        var heaterStatus = new HeaterStatus({
+            value: value,
+            date: new Date
+        });
+        heaterStatus.save(function (err) {
+            if (err) {
+                console.error(err);
+                reply( { message: 'Cannot save the heater status.' } ).code(500);
+            } else {
+                reply( { message: 'Heater status successfully set.' } );
+            }
+        });
     },
 
 	getHeater: function (request, reply) {
-		reply({
-			status: true
-		});
+        HeaterStatus
+			.findOne({}, '-__v')
+			.sort({ date: 'desc' })
+			.exec(queryCallback);
+
+		function queryCallback(err, heaterStatus) {
+			if (err) {
+				console.error(err);
+				reply( { message: 'Cannot retrieve the heater status.' } ).code(500);
+			} else {
+				reply( heaterStatus );
+			}
+		}
     }
 }
 
