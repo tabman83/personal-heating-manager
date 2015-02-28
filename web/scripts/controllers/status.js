@@ -17,6 +17,7 @@
         $scope.heaterStatus = '?';
         $scope.outsideWindChill = '?';
         $scope.weatherIcon = '?';
+        $scope.weatherStatus = '?';
 
         var tempHandler = mqttClient.subscribe(appSettings.mqtt.topics.heater, function(value) {
             var value = Boolean(parseInt(value, 10));
@@ -39,6 +40,7 @@
             $scope.outsideTemp = data.item.condition.temp;
             $scope.outsideWindChill = data.wind.chill;
             $scope.weatherIcon = yahooWeatherClient.getConditionIcon(data.item.condition.code);
+            $scope.weatherStatus = data.item.condition.text;
         });
 
 
