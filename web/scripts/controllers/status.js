@@ -54,6 +54,10 @@
             $scope.insideTemp = result[0].value;
         });
 
+        apiClient.Humidity.query({limit: 1}, function(result) {
+            $scope.insideHumidity = result[0].value;
+        });
+
     }]);
 
 })(angular);
