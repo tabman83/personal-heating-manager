@@ -4,7 +4,8 @@
   "description": "A personal heater manager system with Arduino and Raspberry Pi.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall" : "node_modules/.bin/bower install",
+    "start" :       "node_modules/.bin/nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -21,12 +22,14 @@
   "homepage": "https://github.com/tabman83/personal-heater-manager",
   "dependencies": {
     "async": "^0.9.0",
+    "bower": "^1.3.12",
     "hapi": "^8.2.0",
     "joi": "^5.1.0",
     "mongoose": "~3.8.23",
     "mosca": "^0.28.1",
     "mqtt": "^1.0.10",
-    "nconf": "^0.7.1"
+    "nconf": "^0.7.1",
+    "nodemon": "^1.3.7"
   },
   "devDependencies": {
     "autoprefixer-core": "^4.0.2",
