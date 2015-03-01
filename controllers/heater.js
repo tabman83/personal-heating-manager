@@ -59,11 +59,6 @@ HeaterController.prototype = {
 			}
 		}
 
-        HeaterStatus
-			.findOne({}, '-__v')
-			.sort({ date: 'desc' })
-			.exec(queryCallback);
-
     }
 }
 
