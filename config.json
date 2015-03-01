@@ -1,6 +1,5 @@
 {
     "db_host": "mongodb://localhost/PHM",
-    "server_host": "localhost",
     "server_port": 3000,
     "mqtt_ws_port": 3001,
     "mqtt_topic_heater": "PHM/heater",

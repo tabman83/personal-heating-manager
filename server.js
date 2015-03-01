@@ -60,7 +60,6 @@ function startHapiServer(cb) {
     // Create a server with a host and port
     var server = new Hapi.Server();
     server.connection({
-        host: nconf.get('server_host') || localhost,
         port: nconf.get('server_port') || 3000,
         routes: { cors: true }
     });
