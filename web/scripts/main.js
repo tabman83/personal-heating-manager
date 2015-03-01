@@ -9,7 +9,7 @@
     'use strict';
 
     angular
-        .module('PHMApp', ['ngRoute', 'angular-flot'])
+        .module('PHMApp', ['ngRoute', 'ngResource', 'angular-flot'])
         .config(['$routeProvider', function($routeProvider) {
             $routeProvider.when('/status', {
                 templateUrl: '/views/status.html'

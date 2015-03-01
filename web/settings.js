@@ -11,6 +11,9 @@
 
     var appSettings = {
 
+        api: {
+            port: 3000
+        },
         mqtt: {
             port: 3001,
             topics: {

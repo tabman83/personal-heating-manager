@@ -61,7 +61,8 @@ function startHapiServer(cb) {
     var server = new Hapi.Server();
     server.connection({
         host: nconf.get('server_host') || localhost,
-        port: nconf.get('server_port') || 3000
+        port: nconf.get('server_port') || 3000,
+        routes: { cors: true }
     });
     heaterRoutes.routes(server);
     humidityRoutes.routes(server);

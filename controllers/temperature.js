@@ -30,7 +30,7 @@ TemperatureController.prototype = {
 			limit: 24*30;
 		}
 
-		var queryExec = function (err, temperaturePoints) {
+		function queryCallback(err, temperaturePoints) {
 			if (err) {
 				console.error(err);
 				reply( { message: 'Cannot retrieve temperatures.' } ).code(500);
@@ -44,6 +44,6 @@ TemperatureController.prototype = {
 			.sort({ date: 'desc' })
 			.select({ _id: 0, __v: 0 })
 			.limit(limit)
-			.exec(queryExec);
+			.exec(queryCallback);
 	}
 }

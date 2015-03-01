@@ -8,20 +8,18 @@
 (function(angular, undefined) {
     'use strict';
 
-    angular.module('PHMApp').controller('StatusController', ['$rootScope', '$scope', 'mqttClient', 'yahooWeatherClient', 'appSettings', function($rootScope, $scope, mqttClient, yahooWeatherClient, appSettings) {
+    angular.module('PHMApp').controller('StatusController', ['$rootScope', '$scope', 'mqttClient', 'yahooWeatherClient', 'apiClient', 'appSettings', function($rootScope, $scope, mqttClient, yahooWeatherClient, apiClient, appSettings) {
 
         $scope.insideTemp = '?';
         $scope.outsideTemp = '?';
         $scope.insideHumidity = '?';
         $scope.outsideHumidity = '?';
-        $scope.heaterStatus = '?';
         $scope.outsideWindChill = '?';
         $scope.weatherIcon = '?';
         $scope.weatherStatus = '?';
 
         var tempHandler = mqttClient.subscribe(appSettings.mqtt.topics.heater, function(value) {
-            var value = Boolean(parseInt(value, 10));
-            $scope.heaterStatus = value ? 'ON' : 'OFF';
+            $scope.heaterStatus = Boolean(parseInt(value, 10));
         });
 
         var tempHandler = mqttClient.subscribe(appSettings.mqtt.topics.temperature, function(value) {
@@ -35,7 +33,6 @@
         });
 
         yahooWeatherClient.getWeather().then(function(data) {
-            console.log(data);
             $scope.outsideHumidity = data.atmosphere.humidity;
             $scope.outsideTemp = data.item.condition.temp;
             $scope.outsideWindChill = data.wind.chill;
@@ -47,6 +44,14 @@
         $scope.$on("$destroy", function() {
             mqttClient.unsubscribe(tempHandler);
             mqttClient.unsubscribe(humidityHandler);
+        });
+
+        apiClient.HeaterStatus.query({limit: 1}, function(result) {
+            $scope.heaterStatus = result[0].value;
+        });
+
+        apiClient.Temperature.query({limit: 1}, function(result) {
+            $scope.insideTemp = result[0].value;
         });
 
     }]);
