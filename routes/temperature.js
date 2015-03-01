@@ -1,4 +1,3 @@
-var Joi = require("joi");
 var TemperatureController = require('./../controllers/temperature');
 
 var temperatureController = new TemperatureController();

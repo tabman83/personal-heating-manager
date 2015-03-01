@@ -1,4 +1,3 @@
-var Joi = require("joi");
 var HumidityController = require('./../controllers/humidity');
 
 var humidityController = new HumidityController();
