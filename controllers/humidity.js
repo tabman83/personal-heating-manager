@@ -7,13 +7,12 @@ function HumidityController() { }
 HumidityController.prototype = {
 
 	insertHumidity: function (request, reply) {
-		var value = parseInt(request.params.value, 10);
-		if( typeof(value) === 'number' ) {
-			reply( { message: '\'value\' parameter is not a number.' } ).code(301);
+		var value = parseInt(request.payload.value, 10);
+		if( typeof(value) !== 'number' || isNaN(value) ) {
+			reply( { message: 'The parameter \'value\' is not a number.' } ).code(301);
 		} else {
 			var humidityPoint = new HumidityPoint({
-				value: value,
-				date: new Date
+				value: value
 			});
 			humidityPoint.save(function (err) {
 				if (err) {
