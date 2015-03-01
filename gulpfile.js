@@ -67,6 +67,7 @@ gulp.task('fonts', function () {
 gulp.task('extras', function () {
   return gulp.src([
     'web/*.*',
+    'web/views/*',
     '!web/*.html'
   ], {
     dot: true
@@ -89,7 +90,7 @@ gulp.task('serve', ['styles', 'fonts'], function () {
 
   // watch for changes
   gulp.watch([
-    'web/*.html',
+    'web/**/*.html',
     'web/scripts/**/*.js',
     'web/images/**/*',
     '.tmp/fonts/**/*'

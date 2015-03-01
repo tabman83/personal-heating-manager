@@ -15,6 +15,14 @@ var routes = [{
             path: './dist/styles'
         }
     }
+}, {
+	method: 'GET',
+	path: '/views/{path*}',
+    handler: {
+        directory: {
+            path: './dist/views'
+        }
+    }
 }];
 
 module.exports.routes = function (server) {
