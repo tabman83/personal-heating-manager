@@ -43,7 +43,11 @@
 
             this.publish = function(queueName, message) {
                 connectionEstablishedDefer.promise.then( function() {
-                    var pahoMessage = new Paho.MQTT.Message(message);
+                    var encodedMessage = message;
+                    if( typeof message === 'boolean' ) {
+                        encodedMessage = +message;
+                    }
+                    var pahoMessage = new Paho.MQTT.Message(encodedMessage.toString());
                     pahoMessage.destinationName = queueName;
                     client.send(pahoMessage);
                 });

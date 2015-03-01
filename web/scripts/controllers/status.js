@@ -18,6 +18,12 @@
         $scope.weatherIcon = '?';
         $scope.weatherStatus = '?';
 
+        $scope.switchHeating = function() {
+            if( $scope.heaterStatus !== undefined ) {
+                mqttClient.publish( appSettings.mqtt.topics.heater, !$scope.heaterStatus );
+            }
+        };
+
         var heaterHandler = mqttClient.subscribe(appSettings.mqtt.topics.heater, function(value) {
             $scope.heaterStatus = Boolean(parseInt(value, 10));
         });
