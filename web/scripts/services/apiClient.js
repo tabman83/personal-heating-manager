@@ -16,7 +16,7 @@
             HeaterStatus: $resource(baseUrl+'/heater'),
             Temperature: $resource(baseUrl+'/temperatures'),
             Humidity: $resource(baseUrl+'/humidities')
-        }
+        };
 
     }]);
 

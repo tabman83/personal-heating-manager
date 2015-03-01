@@ -18,6 +18,7 @@
     "jquery": true,
     "globals": {
         "angular": false,
+        "Paho": false,
         "_": false
     }
 }

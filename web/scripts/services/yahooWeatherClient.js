@@ -10,7 +10,7 @@
 
     angular.module('PHMApp').factory('yahooWeatherClient', ['$http', '$q', 'appSettings', function($http, $q, appSettings) {
 
-        var yahooWeatherClient = function() {
+        var YahooWeatherClient = function() {
 
             var conditionCode = {
             	'0': 'wi-tornado',
@@ -80,14 +80,14 @@
 
             this.getConditionIcon = function(code) {
                 return conditionCode[code];
-            }
+            };
 
             this.getWeather = function() {
                 return deferred.promise;
-            }
-        }
+            };
+        };
 
-        return new yahooWeatherClient();
+        return new YahooWeatherClient();
 
     }]);
 

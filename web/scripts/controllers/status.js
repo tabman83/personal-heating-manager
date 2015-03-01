@@ -18,18 +18,16 @@
         $scope.weatherIcon = '?';
         $scope.weatherStatus = '?';
 
-        var tempHandler = mqttClient.subscribe(appSettings.mqtt.topics.heater, function(value) {
+        var heaterHandler = mqttClient.subscribe(appSettings.mqtt.topics.heater, function(value) {
             $scope.heaterStatus = Boolean(parseInt(value, 10));
         });
 
         var tempHandler = mqttClient.subscribe(appSettings.mqtt.topics.temperature, function(value) {
-            var value = parseFloat(value);
-            $scope.insideTemp = value;
+            $scope.insideTemp = parseFloat(value);
         });
 
         var humidityHandler = mqttClient.subscribe(appSettings.mqtt.topics.humidity, function(value) {
-            var value = parseFloat(value);
-            $scope.insideHumidity = value;
+            $scope.insideHumidity = parseFloat(value);
         });
 
         yahooWeatherClient.getWeather().then(function(data) {
@@ -41,7 +39,8 @@
         });
 
 
-        $scope.$on("$destroy", function() {
+        $scope.$on('$destroy', function() {
+            mqttClient.unsubscribe(heaterHandler);
             mqttClient.unsubscribe(tempHandler);
             mqttClient.unsubscribe(humidityHandler);
         });
