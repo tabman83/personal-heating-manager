@@ -42,7 +42,7 @@
             	'26': 'wi-cloudy',
             	'27': 'wi-night-cloudy',
             	'28': 'wi-day-cloudy',
-            	'29': 'night-partly-cloudy',
+            	'29': 'wi-night-partly-cloudy',
             	'30': 'wi-day-sunny-overcast',
             	'31': 'wi-night-clear',
             	'32': 'wi-day-sunny',
