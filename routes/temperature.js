@@ -6,12 +6,14 @@ var routes = [{
 	method: 'POST',
 	path: '/temperatures',
 	config: {
+		auth: 'simple',
 		handler: temperatureController.insertTemperature.bind(temperatureController)
 	}
 }, {
 	method: 'GET',
 	path: '/temperatures',
 	config: {
+		auth: 'simple',
 		handler: temperatureController.getTemperature.bind(temperatureController)
 	}
 }];

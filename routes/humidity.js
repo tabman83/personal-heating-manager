@@ -6,12 +6,14 @@ var routes = [{
 	method: 'POST',
 	path: '/humidities',
 	config: {
+		auth: 'simple',
 		handler: humidityController.insertHumidity.bind(humidityController)
 	}
 }, {
 	method: 'GET',
 	path: '/humidities',
 	config: {
+		auth: 'simple',
 		handler: humidityController.getHumidity.bind(humidityController)
 	}
 }];

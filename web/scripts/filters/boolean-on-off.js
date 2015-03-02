@@ -8,15 +8,15 @@
 (function(angular, undefined) {
     'use strict';
 
-    angular.module('PHMApp').filter('booleanOnOff', function() {
+    angular.module('PHMApp').filter('booleanOnOff', [function() {
 
         return function(input) {
-            if(input === undefined) {
+            if( typeof(input) === 'undefined' ) {
                 return '?';
             }
             return input ? 'ON' : 'OFF';
         };
 
-    });
+    }]);
 
 })(angular);

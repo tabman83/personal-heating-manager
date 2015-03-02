@@ -14,9 +14,9 @@ var mongoose = require('mongoose');
 var async = require('async');
 var readLine = require ('readline');
 var Bcrypt = require('bcrypt');
+var hapiAuthBasic = require('hapi-auth-basic');
 var mqttBroker = require('./mqtt/mqttBroker');
 var mqttClient = require('./mqtt/mqttClient');
-
 
 // load up routes
 var heaterRoutes = require('./routes/heater');
@@ -61,13 +61,8 @@ function startHapiServer(cb) {
         port: nconf.get('server_port') || 3000,
         routes: { cors: true }
     });
-    heaterRoutes.routes(server);
-    humidityRoutes.routes(server);
-    temperatureRoutes.routes(server);
-    webHttpRoutes.routes(server);
 
     var users = nconf.get('users');
-
     var validate = function (username, password, callback) {
         var storedPassword = users[username];
         if (!storedPassword) {
@@ -77,17 +72,22 @@ function startHapiServer(cb) {
             callback(err, isValid, { username: username });
         });
     };
-
-    server.register(require('hapi-auth-basic'), function (err) {
-        server.auth.strategy('simple', 'basic', { validateFunc: validate });
-        server.auth.default('simple');
+    server.register(hapiAuthBasic, function (err) {
+        server.auth.strategy('simple', 'basic', {validateFunc: validate});
+        //server.auth.default('simple');
     });
+
+    heaterRoutes.routes(server);
+    humidityRoutes.routes(server);
+    temperatureRoutes.routes(server);
+    webHttpRoutes.routes(server);
 
     // Start the server
     server.start(function() {
         console.log('personal-heater-manager server started @ ' + server.info.uri);
         cb(null);
     });
+
 }
 
 function gracefulExit () {
