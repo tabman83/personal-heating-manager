@@ -3,7 +3,7 @@
 
     <div class="row">
         <div class="col-xs-6">
-            <div class="tile" ng-class="{red: (heaterStatus !== true), green: (heaterStatus === true) }" ng-click="switchHeating()">
+            <div class="tile" ng-class="{red: heaterStatus !== true, green: heaterStatus === true, darkgray: heaterButtonDisabled }" ng-click="heaterButtonDisabled ? angular.noop() : switchHeating()">
                 <h1 class="title">{{heaterStatus | booleanOnOff}}</h1>
                 <p>HEATING status</p>
             </div>

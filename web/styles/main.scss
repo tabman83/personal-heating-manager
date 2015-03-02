@@ -99,7 +99,7 @@ strong {
     &.purple, &.blue, &.red, &.orange, &.green {
         color: #fff;
     }
-
+    
     &.purple {
         background: $color_purple;
     }
@@ -119,6 +119,11 @@ strong {
     &.orange {
         background: $color_orange;
     }
+
+    &.darkgray {
+        background: darkgray;
+    }
+
 }
 
 .tile {

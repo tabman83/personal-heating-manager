@@ -8,7 +8,7 @@
 (function(angular, undefined) {
     'use strict';
 
-    angular.module('PHMApp').controller('StatusController', ['$rootScope', '$scope', 'mqttClient', 'yahooWeatherClient', 'apiClient', 'appSettings', function($rootScope, $scope, mqttClient, yahooWeatherClient, apiClient, appSettings) {
+    angular.module('PHMApp').controller('StatusController', ['$rootScope', '$scope', '$timeout', 'mqttClient', 'yahooWeatherClient', 'apiClient', 'appSettings', function($rootScope, $scope, $timeout, mqttClient, yahooWeatherClient, apiClient, appSettings) {
 
         $scope.insideTemp = '?';
         $scope.outsideTemp = '?';
@@ -17,10 +17,15 @@
         $scope.outsideWindChill = '?';
         $scope.weatherIcon = '?';
         $scope.weatherStatus = '?';
+        $scope.heaterButtonDisabled = false;
 
         $scope.switchHeating = function() {
             if( $scope.heaterStatus !== undefined ) {
                 mqttClient.publish( appSettings.mqtt.topics.heater, !$scope.heaterStatus );
+                $scope.heaterButtonDisabled = true;
+                $timeout(function() {
+                    $scope.heaterButtonDisabled = false;
+                }, 2000);
             }
         };
 
