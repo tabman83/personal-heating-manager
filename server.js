@@ -13,9 +13,9 @@ var Hapi = require('hapi');
 var mongoose = require('mongoose');
 var async = require('async');
 var readLine = require ('readline');
+var Bcrypt = require('bcrypt');
 var mqttBroker = require('./mqtt/mqttBroker');
 var mqttClient = require('./mqtt/mqttClient');
-
 
 
 // load up routes
@@ -53,8 +53,6 @@ function openDbConnection(cb) {
     }
 }
 
-
-
 function startHapiServer(cb) {
 
     // Create a server with a host and port
@@ -67,6 +65,23 @@ function startHapiServer(cb) {
     humidityRoutes.routes(server);
     temperatureRoutes.routes(server);
     webHttpRoutes.routes(server);
+
+    var users = nconf.get('users');
+
+    var validate = function (username, password, callback) {
+        var storedPassword = users[username];
+        if (!storedPassword) {
+            return callback(null, false);
+        }
+        Bcrypt.compare(password, storedPassword, function (err, isValid) {
+            callback(err, isValid, { username: username });
+        });
+    };
+
+    server.register(require('hapi-auth-basic'), function (err) {
+        server.auth.strategy('simple', 'basic', { validateFunc: validate });
+        server.auth.default('simple');
+    });
 
     // Start the server
     server.start(function() {

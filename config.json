@@ -4,5 +4,9 @@
     "mqtt_ws_port": 3001,
     "mqtt_topic_heater": "PHM/heater",
     "mqtt_topic_temperature": "PHM/temperature",
-    "mqtt_topic_humidity": "PHM/humidity"
+    "mqtt_topic_humidity": "PHM/humidity",
+    "users" : {
+        "tabman83": "$2a$08$0jnKJs7L66LGSdM2u8N.6OmqxUZpzQ8.br/wtpIeWDL5iO1wdOWx.",
+        "annamaria": "$2a$08$2YxE4E3qlnmYgejzvuuCk.AHHhmoyEHNDgpOmqkO9dp8VnfP.xspu"
+    }
 }
