@@ -4,6 +4,12 @@ $icon-font-path: '../fonts/';
 @import "bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
+/*
+//  Prevent text size change on orientation change.
+html {
+    -webkit-text-size-adjust: 100%;
+}*/
+
 .browserupgrade {
     margin: 0.2em 0;
     background: #ccc;
@@ -22,6 +28,17 @@ body {
     font-weight: 400;
     padding-top: 70px;
     padding-bottom: 20px;
+}
+
+div.scrollable {
+    position: absolute;
+    top: 50px;
+    padding-top: 20px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 .row {
@@ -85,42 +102,22 @@ strong {
 
     &.purple {
         background: $color_purple;
-
-		&:hover {
-			background: darken($color_purple, 10%);
-		}
     }
 
     &.red {
         background: $color_red;
-
-		&:hover {
-			background: darken($color_red, 10%);
-		}
     }
 
     &.green {
         background: $color_green;
-
-		&:hover {
-			background: darken($color_green, 10%);
-		}
     }
 
     &.blue {
         background: $color_blue;
-
-		&:hover {
-			background: darken($color_blue, 10%);
-		}
     }
 
     &.orange {
         background: $color_orange;
-
-		&:hover {
-			background: darken($color_orange, 10%);
-		}
     }
 }
 
