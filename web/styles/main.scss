@@ -67,7 +67,7 @@ p, span, a, ul, li, button {
 }
 
 strong {
-	font-weight: 600;
+	font-weight: 700;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -75,9 +75,7 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: 300;
 }
 
-strong {
-  font-weight: 400;
-}
+
 .tile {
     width: 100%;
 	display: inline-block;
@@ -99,7 +97,7 @@ strong {
     &.purple, &.blue, &.red, &.orange, &.green {
         color: #fff;
     }
-    
+
     &.purple {
         background: $color_purple;
     }

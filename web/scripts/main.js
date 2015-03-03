@@ -17,6 +17,8 @@
                 templateUrl: 'views/stats.html'
             }).when('/timer', {
                 templateUrl: 'views/timer.html'
+            }).when('/new-timer', {
+                templateUrl: 'views/new-timer.html'
             }).otherwise({
                 redirectTo: '/status'
             });
