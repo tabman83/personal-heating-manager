@@ -15,10 +15,10 @@
                 templateUrl: '/views/status.html'
             }).when('/stats', {
                 templateUrl: 'views/stats.html'
-            }).when('/timer', {
-                templateUrl: 'views/timer.html'
-            }).when('/new-timer', {
-                templateUrl: 'views/new-timer.html'
+            }).when('/schedule', {
+                templateUrl: 'views/schedule.html'
+            }).when('/new-schedule', {
+                templateUrl: 'views/new-schedule.html'
             }).otherwise({
                 redirectTo: '/status'
             });
