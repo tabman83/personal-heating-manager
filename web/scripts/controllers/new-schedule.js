@@ -8,9 +8,9 @@
 (function(angular, undefined) {
     'use strict';
 
-    angular.module('PHMApp').controller('NewScheduleController', ['$rootScope', '$scope', '$location', function($rootScope, $scope, $location) {
+    angular.module('PHMApp').controller('NewScheduleController', ['$rootScope', '$scope', '$location', 'apiClient', function($rootScope, $scope, $location, apiClient) {
 
-        var weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        var weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
         function getAmoment(date, time) {
             return moment({
@@ -22,6 +22,9 @@
                 second: time.getSeconds()
             });
         }
+
+        $scope.isDisabled = false;
+        $scope.isErrored = false;
 
         var now = new Date();
         now.setSeconds(0,0);
@@ -117,21 +120,35 @@
 
         $scope.createSchedule = function() {
             if($scope.scheduleForm.$valid) {
-                var data = {
+                var schedule = new apiClient.Schedule({
                     name: $scope.form.name,
                     type: $scope.form.type,
                     recurrence: $scope.form.recurrence,
-                }
-                if($scope.form.recurrence === 'oneTime') {
-                    data.date = getAmoment($scope.form.date, $scope.form.time).utc();
-                }
+                    repetition: []
+                });
                 if($scope.form.recurrence === 'weekly') {
-                    data.startDate = getAmoment($scope.form.startDate, $scope.form.startTime).utc();
-                    data.endDate = getAmoment($scope.form.endDate, $scope.form.endTime).utc();
+                    schedule.repetition = $scope.form.repetition;
                 }
-                console.log(data);
+                if( $scope.form.type === 'ON' || $scope.form.type === 'OFF' ) {
+                    schedule.startDate = getAmoment($scope.form.date, $scope.form.time).utc();
+                }
+                if( $scope.form.type === 'ONtoOFF' || $scope.form.type === 'OFFtoON' ) {
+                    schedule.startDate = getAmoment($scope.form.startDate, $scope.form.startTime).utc();
+                    schedule.endDate = getAmoment($scope.form.endDate, $scope.form.endTime).utc();
+                }
 
-                //$location.path('/schedule');
+                //console.log(data);
+                $scope.isDisabled = true;
+                $scope.isErrored = false;
+                schedule.$save(function(result) {
+                    console.log(result);
+                    //$location.path('/schedule');
+                }, function(error) {
+                    $scope.isErrored = true;
+                    $scope.errorText = error.statusText || 'Cannot contact server';
+                }).finally(function() {
+                    $scope.isDisabled = false;
+                });
             } else {
                 console.log($scope.scheduleForm.$error);
             }
