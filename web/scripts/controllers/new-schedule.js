@@ -52,7 +52,6 @@
             }
         });
 
-
         $scope.$watchCollection('form', function(newValue) {
             var text = '';
             switch(newValue.type) {
@@ -137,10 +136,9 @@
                     schedule.endDate = getAmoment($scope.form.endDate, $scope.form.endTime).utc();
                 }
 
-                //console.log(data);
                 $scope.isDisabled = true;
                 $scope.isErrored = false;
-                schedule.$save(function(result) {
+                schedule.$save(function() {
                     $location.path('/schedules');
                 }, function(error) {
                     $scope.isErrored = true;

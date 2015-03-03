@@ -17,19 +17,19 @@
                 case 'ON':
                     text += '<span class="label label-success">Switch on ';
                     if(input.recurrence === 'oneTime') {
-                        text += moment(input.date).format('LL');
+                        text += moment(input.startDate).format('LL');
                     }
                     text += ' at ';
-                    text += moment(input.time).format('LT');
+                    text += moment(input.startDate).format('LT');
                     text += '</span>';
                     break;
                 case 'OFF':
                     text += '<span class="label label-danger">Switch off ';
                     if(input.recurrence === 'oneTime') {
-                        text += moment(input.date).format('LL');
+                        text += moment(input.startDate).format('LL');
                     }
                     text += ' at ';
-                    text += moment(input.time).format('LT');
+                    text += moment(input.startDate).format('LT');
                     text += '</span>';
                     break;
                 case 'ONtoOFF':
@@ -38,14 +38,14 @@
                         text += moment(input.startDate).format('LL');
                     }
                     text += ' at ';
-                    text += moment(input.startTime).format('LT');
+                    text += moment(input.startDate).format('LT');
                     text += '</span> <span class="label label-default">and</span> ';
                     text += '<span class="label label-danger">off ';
                     if(input.recurrence === 'oneTime') {
                         text += moment(input.endDate).format('LL');
                     }
                     text += ' at ';
-                    text += moment(input.endTime).format('LT');
+                    text += moment(input.endDate).format('LT');
                     text += '</span>';
                     break;
                 case 'OFFtoON':
@@ -54,14 +54,14 @@
                         text += moment(input.startDate).format('LL');
                     }
                     text += ' at ';
-                    text += moment(input.startTime).format('LT');
+                    text += moment(input.startDate).format('LT');
                     text += '</span> <span class="label label-default">and</span> ';
                     text += '<span class="label label-success">off ';
                     if(input.recurrence === 'oneTime') {
                         text += moment(input.endDate).format('LL');
                     }
                     text += ' at ';
-                    text += moment(input.endTime).format('LT');
+                    text += moment(input.endDate).format('LT');
                     text += '</span>';
                     break;
             }

@@ -16,7 +16,13 @@
             HeaterStatus: $resource(baseUrl+'/heater'),
             Temperature: $resource(baseUrl+'/temperatures'),
             Humidity: $resource(baseUrl+'/humidities'),
-            Schedule: $resource(baseUrl+'/schedules')
+            Schedule: $resource(baseUrl+'/schedules/:id', {
+                id: '@_id' 
+            }, {
+                update: {
+                    method: 'PUT' // this method issues a PUT request
+                }
+            })
         };
 
     }]);

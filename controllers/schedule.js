@@ -26,19 +26,46 @@ ScheduleController.prototype = {
 		});
 	},
 
-	getSchedule: function (request, reply) {
+	getScheduleById: function (request, reply) {
+		Schedule.findById(request.params.id, '-__v', function(err, schedule) {
+			if (err) {
+				console.log(err);
+				reply( { message: err.message } ).code(500);
+			} else {
+				if(!schedule) {
+					reply( { message: 'Cannot find the specified schedule.' } ).code(404);
+				} else {
+					reply(schedule);
+				}
+			}
+		});
+	},
+
+	updateSchedule: function (request, reply) {
+		//Model.findByIdAndUpdate(id, [update], [options], [callback])
+		Schedule.findByIdAndUpdate(request.params.id, request.payload, function(err, schedule) {
+			if (err) {
+				console.log(err);
+				reply( { message: err.message } ).code(500);
+			} else {
+				reply( { message: 'Success.' } );
+			}
+		});
+	},
+
+	getSchedules: function (request, reply) {
 
 		var limit = parseInt(request.query.limit, 10);
 		if( typeof(value) !== 'number' ) {
 			limit: 500;
 		}
 
-		function queryCallback(err, temperaturePoints) {
+		function queryCallback(err, schedule) {
 			if (err) {
 				console.error(err);
 				reply( { message: 'Cannot retrieve schedules.' } ).code(500);
 			} else {
-				reply(temperaturePoints);
+				reply(schedule);
 			}
 		}
 

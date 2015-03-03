@@ -21,7 +21,21 @@ var routes = [{
 	path: '/schedules',
 	config: {
 		//auth: 'simple',
-		handler: scheduleController.getSchedule.bind(scheduleController)
+		handler: scheduleController.getSchedules.bind(scheduleController)
+	}
+}, {
+	method: 'GET',
+	path: '/schedules/{id}',
+	config: {
+		//auth: 'simple',
+		handler: scheduleController.getScheduleById.bind(scheduleController)
+	}
+}, {
+	method: 'PUT',
+	path: '/schedules/{id}',
+	config: {
+		//auth: 'simple',
+		handler: scheduleController.updateSchedule.bind(scheduleController)
 	}
 }];
 
