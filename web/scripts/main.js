@@ -16,7 +16,7 @@
             }).when('/stats', {
                 templateUrl: 'views/stats.html'
             }).when('/schedules', {
-                templateUrl: 'views/schedule.html'
+                templateUrl: 'views/schedules.html'
             }).when('/new-schedule', {
                 templateUrl: 'views/new-schedule.html'
             }).when('/edit-schedule/:id', {
