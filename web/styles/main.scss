@@ -17,6 +17,16 @@ html {
     padding: 0.2em 0;
 }
 
+.align-middle {
+    vertical-align: middle;
+}
+table>thead>tr>td {
+    font-weight: bold;
+}
+table>tbody>tr {
+    cursor: pointer;
+}
+
 /* Space out content a bit */
 $base_font_size: 14px;
 $text_font_family: 'Open Sans', "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;

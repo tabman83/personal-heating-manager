@@ -1,10 +1,29 @@
-<div ng-controller="ScheduleController">
+<div ng-controller="SchedulesController">
 
     <div class="row">
+
         <div class="col-lg-12">
 
-            <a href="#/new-schedule" class="btn btn-primary">Create</a>
+            <div class="clearfix">
+                <span class="h1 align-middle">Schedules</span>
+                <a href="#/new-schedule" class="pull-right btn btn-primary"><i class="fa fa-plus"></i> Create</a>
+            </div>
 
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Name</td>
+                        <td>Description</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="schedule in schedules" ng-click="edit(schedule._id)">
+                        <td ng-bind="schedule.name"></td>
+                        <td ng-bind-html="schedule | scheduleText"></td>
+                    </tr>
+                </tbody>
+            </table>
 
         </div>
     </div>

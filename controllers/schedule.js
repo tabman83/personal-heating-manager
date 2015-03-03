@@ -45,7 +45,7 @@ ScheduleController.prototype = {
 		Schedule
 			.find()
 			.sort({ created: 'desc' })
-			.select({ _id: 0, __v: 0 })
+			.select({ __v: 0 })
 			.limit(limit)
 			.exec(queryCallback);
 	}

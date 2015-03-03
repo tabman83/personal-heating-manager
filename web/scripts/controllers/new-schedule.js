@@ -141,7 +141,7 @@
                 $scope.isDisabled = true;
                 $scope.isErrored = false;
                 schedule.$save(function(result) {
-                    $location.path('/schedule');
+                    $location.path('/schedules');
                 }, function(error) {
                     $scope.isErrored = true;
                     $scope.errorText = error.statusText || 'Cannot contact server';
