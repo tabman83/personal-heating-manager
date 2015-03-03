@@ -59,46 +59,46 @@
                 case 'ON':
                     text = 'Switch on ';
                     if(newValue.recurrence === 'oneTime') {
-                        text += getAmoment(newValue.date, newValue.time).calendar();
-                    } else {
-                        text += moment(newValue.time).format('LT');
+                        text += moment(newValue.date).format('LL');
                     }
+                    text += ' at ';
+                    text += moment(newValue.time).format('LT');
                     break;
                 case 'OFF':
                     text = 'Switch off ';
                     if(newValue.recurrence === 'oneTime') {
-                        text += getAmoment(newValue.date, newValue.time).calendar();
-                    } else {
-                        text += moment(newValue.time).format('LT');
+                        text += moment(newValue.date).format('LL');
                     }
+                    text += ' at ';
+                    text += moment(newValue.time).format('LT');
                     break;
                 case 'ONtoOFF':
                     text = 'Switch on ';
                     if(newValue.recurrence === 'oneTime') {
-                        text += getAmoment(newValue.date, newValue.time).calendar();
-                    } else {
-                        text += moment(newValue.time).format('LT');
+                        text += moment(newValue.startDate).format('LL');
                     }
+                    text += ' at ';
+                    text += moment(newValue.startTime).format('LT');
                     text += ' and off ';
                     if(newValue.recurrence === 'oneTime') {
-                        text += getAmoment(newValue.date, newValue.time).calendar();
-                    } else {
-                        text += moment(newValue.time).format('LT');
+                        text += moment(newValue.endDate).format('LL');
                     }
+                    text += ' at ';
+                    text += moment(newValue.endTime).format('LT');
                     break;
                 case 'OFFtoON':
                     text = 'Switch off ';
                     if(newValue.recurrence === 'oneTime') {
-                        text += getAmoment(newValue.date, newValue.time).calendar();
-                    } else {
-                        text += moment(newValue.time).format('LT');
+                        text += moment(newValue.startDate).format('LL');
                     }
+                    text += ' at ';
+                    text += moment(newValue.startTime).format('LT');
                     text += ' and on ';
                     if(newValue.recurrence === 'oneTime') {
-                        text += getAmoment(newValue.date, newValue.time).calendar();
-                    } else {
-                        text += moment(newValue.time).format('LT');
+                        text += moment(newValue.endDate).format('LL');
                     }
+                    text += ' at ';
+                    text += moment(newValue.endTime).format('LT');
                     break;
             }
 
