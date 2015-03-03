@@ -22,6 +22,7 @@ var mqttClient = require('./mqtt/mqttClient');
 var heaterRoutes = require('./routes/heater');
 var humidityRoutes = require('./routes/humidity');
 var temperatureRoutes = require('./routes/temperature');
+var scheduleRoutes = require('./routes/schedule');
 var webHttpRoutes = require('./routes/webHttp');
 
 function openDbConnection(cb) {
@@ -80,6 +81,7 @@ function startHapiServer(cb) {
     heaterRoutes.routes(server);
     humidityRoutes.routes(server);
     temperatureRoutes.routes(server);
+    scheduleRoutes.routes(server);
     webHttpRoutes.routes(server);
 
     // Start the server
