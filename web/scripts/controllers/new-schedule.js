@@ -127,7 +127,7 @@
                     repetition: []
                 });
                 if($scope.form.recurrence === 'weekly') {
-                    schedule.repetition = $scope.form.repetition;
+                    schedule.repetition = $scope.form.repetition.map(Number);
                 }
                 if( $scope.form.type === 'ON' || $scope.form.type === 'OFF' ) {
                     schedule.startDate = getAmoment($scope.form.date, $scope.form.time).utc();
@@ -141,8 +141,7 @@
                 $scope.isDisabled = true;
                 $scope.isErrored = false;
                 schedule.$save(function(result) {
-                    console.log(result);
-                    //$location.path('/schedule');
+                    $location.path('/schedule');
                 }, function(error) {
                     $scope.isErrored = true;
                     $scope.errorText = error.statusText || 'Cannot contact server';

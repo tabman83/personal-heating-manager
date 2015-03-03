@@ -14,6 +14,7 @@ var scheduleSchema = mongoose.Schema({
     type: String,
     startDate: Date,
     endDate: Date,
+    repetition: Array,
     created: {
         type: Date,
         default: Date.now
