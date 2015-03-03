@@ -1,119 +1,121 @@
-<div ng-controller="NewScheduleController">
+<div class="row" ng-controller="NewScheduleController">
+    <div class="col-lg-12">
+        <form class="form-horizontal" name="scheduleForm" ng-submit="createSchedule()">
+            <div class="form-group">
+                <label for="inputName" class="col-sm-2 control-label">Name</label>
+                <div class="col-sm-10">
+                    <input type="text" ng-model="form.name" class="form-control" id="inputName" maxlength="50" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Action</label>
+                <div class="col-sm-10">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="switchRadios" id="switchRadios1" ng-model="form.type" value="ON">
+                            Switch ON
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="switchRadios" id="switchRadios2" ng-model="form.type" value="OFF">
+                            Switch OFF
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="switchRadios" id="switchRadios2" ng-model="form.type" value="ONtoOFF">
+                            ON <i class="fa fa-long-arrow-right"></i> OFF
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="switchRadios" id="switchRadios2" ng-model="form.type" value="OFFtoON">
+                            OFF <i class="fa fa-long-arrow-right"></i> ON
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Recur</label>
+                <div class="col-sm-10">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="radioRecurrence" id="radioRecurrence1" ng-model="form.recurrence" value="oneTime">
+                            One time
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="radioRecurrence" id="radioRecurrence2" ng-model="form.recurrence" value="weekly">
+                            Weekly
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" ng-if="(form.type === 'ON' || form.type === 'OFF') && form.recurrence === 'oneTime'">
+                <label for="inputDate" class="col-sm-2 control-label">Date</label>
+                <div class="col-sm-10">
+                    <input type="date" ng-model="form.date" class="form-control" id="inputDate" min="{{minDate}}" max="2050-12-12">
+                </div>
+            </div>
+            <div class="form-group" ng-if="form.type === 'ON' || form.type === 'OFF'">
+                <label for="inputTime" class="col-sm-2 control-label">Time</label>
+                <div class="col-sm-10">
+                    <input type="time" ng-model="form.time" class="form-control" id="inputTime">
+                </div>
+            </div>
+            <div class="form-group" ng-if="(form.type === 'ONtoOFF' || form.type === 'OFFtoON') && form.recurrence === 'oneTime'">
+                <label for="inputStartDate" class="col-sm-2 control-label">Start date</label>
+                <div class="col-sm-10">
+                    <input type="date" ng-model="form.startDate" class="form-control" id="inputStartDate" min="{{minDate}}" max="2050-12-12">
+                </div>
+            </div>
+            <div class="form-group" ng-if="form.type === 'ONtoOFF' || form.type === 'OFFtoON'">
+                <label for="inputStartTime" class="col-sm-2 control-label">Start time</label>
+                <div class="col-sm-10">
+                    <input type="time" ng-model="form.startTime" class="form-control" id="inputStartTime">
+                </div>
+            </div>
+            <div class="form-group" ng-if="(form.type === 'ONtoOFF' || form.type === 'OFFtoON') && form.recurrence === 'oneTime'">
+                <label for="inputEndDate" class="col-sm-2 control-label">End date</label>
+                <div class="col-sm-10">
+                    <input type="date" ng-model="form.endDate" class="form-control" id="inputEndDate" min="{{minEndDate}}" max="2050-12-12">
+                </div>
+            </div>
+            <div class="form-group" ng-if="form.type === 'ONtoOFF' || form.type === 'OFFtoON'">
+                <label for="inputEndTime" class="col-sm-2 control-label">End time</label>
+                <div class="col-sm-10">
+                    <input type="time" ng-model="form.endTime" class="form-control" id="inputEndTime">
+                </div>
+            </div>
+            <div class="form-group" ng-if="form.recurrence === 'weekly'">
+                <label for="inputRepeat" class="col-sm-2 control-label">Repeat</label>
+                <div class="col-sm-10">
+                    <select multiple class="form-control" id="inputRepeat" ng-model="form.repetition" size="7">
+                        <option value="0">Monday</option>
+                        <option value="1">Tuesday</option>
+                        <option value="2">Wednesday</option>
+                        <option value="3">Thursday</option>
+                        <option value="4">Friday</option>
+                        <option value="5">Saturday</option>
+                        <option value="6">Sunday</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <span>{{executionLabel}}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a class="btn btn-default" href="#/schedule">Cancel</a>
+                </div>
+            </div>
+        </form>
 
-    <div class="row">
-        <div class="col-lg-12">
-            <form class="form-horizontal" name="scheduleForm">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Action</label>
-                    <div class="col-sm-10">
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="switchRadios" id="switchRadios1" ng-model="form.actionType" value="ON">
-                                Switch ON
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="switchRadios" id="switchRadios2" ng-model="form.actionType" value="OFF">
-                                Switch OFF
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="switchRadios" id="switchRadios2" ng-model="form.actionType" value="ONtoOFF">
-                                ON <i class="fa fa-long-arrow-right"></i> OFF
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="switchRadios" id="switchRadios2" ng-model="form.actionType" value="OFFtoON">
-                                OFF <i class="fa fa-long-arrow-right"></i> ON
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Recur</label>
-                    <div class="col-sm-10">
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="radioRecurrence" id="radioRecurrence1" ng-model="form.recurrence" value="oneTime">
-                                One time
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="radioRecurrence" id="radioRecurrence2" ng-model="form.recurrence" value="weekly">
-                                Weekly
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group" ng-if="(form.actionType === 'ON' || form.actionType === 'OFF') && form.recurrence === 'oneTime'">
-                    <label for="inputDate" class="col-sm-2 control-label">Date</label>
-                    <div class="col-sm-10">
-                        <input type="date" ng-model="form.date" class="form-control" id="inputDate">
-                    </div>
-                </div>
-                <div class="form-group" ng-if="form.actionType === 'ON' || form.actionType === 'OFF'">
-                    <label for="inputTime" class="col-sm-2 control-label">Time</label>
-                    <div class="col-sm-10">
-                        <input type="time" ng-model="form.time" class="form-control" id="inputTime">
-                    </div>
-                </div>
-                <div class="form-group" ng-if="(form.actionType === 'ONtoOFF' || form.actionType === 'OFFtoON') && form.recurrence === 'oneTime'">
-                    <label for="inputStartDate" class="col-sm-2 control-label">Start date</label>
-                    <div class="col-sm-10">
-                        <input type="date" ng-model="form.startDate" class="form-control" id="inputStartDate">
-                    </div>
-                </div>
-                <div class="form-group" ng-if="form.actionType === 'ONtoOFF' || form.actionType === 'OFFtoON'">
-                    <label for="inputStartTime" class="col-sm-2 control-label">Start time</label>
-                    <div class="col-sm-10">
-                        <input type="time" ng-model="form.startTime" class="form-control" id="inputStartTime">
-                    </div>
-                </div>
-                <div class="form-group" ng-if="(form.actionType === 'ONtoOFF' || form.actionType === 'OFFtoON') && form.recurrence === 'oneTime'">
-                    <label for="inputEndDate" class="col-sm-2 control-label">End date</label>
-                    <div class="col-sm-10">
-                        <input type="date" ng-model="form.endDate" class="form-control" id="inputEndDate">
-                    </div>
-                </div>
-                <div class="form-group" ng-if="form.actionType === 'ONtoOFF' || form.actionType === 'OFFtoON'">
-                    <label for="inputEndTime" class="col-sm-2 control-label">End time</label>
-                    <div class="col-sm-10">
-                        <input type="time" ng-model="form.endTime" class="form-control" id="inputEndTime">
-                    </div>
-                </div>
-                <div class="form-group" ng-if="form.recurrence === 'weekly'">
-                    <label for="inputRepeat" class="col-sm-2 control-label">Repeat</label>
-                    <div class="col-sm-10">
-                        <select multiple class="form-control" id="inputRepeat" ng-model="form.repetition" size="7">
-                            <option value="0">Monday</option>
-                            <option value="1">Tuesday</option>
-                            <option value="2">Wednesday</option>
-                            <option value="3">Thursday</option>
-                            <option value="4">Friday</option>
-                            <option value="5">Saturday</option>
-                            <option value="6">Sunday</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <span>{{executionLabel}}</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <button class="btn btn-default">Cancel</button>
-                    </div>
-                </div>
-            </form>
 
-
-        </div>
     </div>
-
 </div>

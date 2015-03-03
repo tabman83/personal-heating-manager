@@ -15,7 +15,8 @@
         return {
             HeaterStatus: $resource(baseUrl+'/heater'),
             Temperature: $resource(baseUrl+'/temperatures'),
-            Humidity: $resource(baseUrl+'/humidities')
+            Humidity: $resource(baseUrl+'/humidities'),
+            Schedule: $resource(baseUrl+'/schedules')
         };
 
     }]);

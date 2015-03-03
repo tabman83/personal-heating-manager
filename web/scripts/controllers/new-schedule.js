@@ -2,13 +2,13 @@
   * @file        new-schedule.js
   * @author      Antonino Parisi <tabman83@gmail.com>
   * @date        02/03/2015 20:06
-  * @description Controller for the new timer view
+  * @description Controller for the new schedule view
   */
 
 (function(angular, undefined) {
     'use strict';
 
-    angular.module('PHMApp').controller('NewScheduleController', ['$rootScope', '$scope', function($rootScope, $scope) {
+    angular.module('PHMApp').controller('NewScheduleController', ['$rootScope', '$scope', '$location', function($rootScope, $scope, $location) {
 
         var weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
@@ -26,10 +26,13 @@
         var now = new Date();
         now.setSeconds(0,0);
 
+        $scope.minDate = moment(now).format('YYYY-MM-DD');
+
         $scope.form = {
+            name: 'New schedule',
             repetition: [0],
             recurrence: 'oneTime',
-            actionType: 'ON',
+            type: 'ON',
             date: now,
             time: now,
             startDate: now,
@@ -39,10 +42,17 @@
         }
 
 
+        $scope.$watch('form.startDate', function(newValue) {
+            $scope.minEndDate = moment(newValue).format('YYYY-MM-DD');
+            if( moment($scope.form.endDate).isBefore($scope.minEndDate) ) {
+                $scope.form.endDate = moment(newValue).toDate();
+            }
+        });
+
+
         $scope.$watchCollection('form', function(newValue) {
-            console.log(newValue);
-            var text;
-            switch(newValue.actionType) {
+            var text = '';
+            switch(newValue.type) {
                 case 'ON':
                     text = 'Switch on ';
                     if(newValue.recurrence === 'oneTime') {
@@ -105,6 +115,27 @@
             $scope.executionLabel = text;
         });
 
+        $scope.createSchedule = function() {
+            if($scope.scheduleForm.$valid) {
+                var data = {
+                    name: $scope.form.name,
+                    type: $scope.form.type,
+                    recurrence: $scope.form.recurrence,
+                }
+                if($scope.form.recurrence === 'oneTime') {
+                    data.date = getAmoment($scope.form.date, $scope.form.time).utc();
+                }
+                if($scope.form.recurrence === 'weekly') {
+                    data.startDate = getAmoment($scope.form.startDate, $scope.form.startTime).utc();
+                    data.endDate = getAmoment($scope.form.endDate, $scope.form.endTime).utc();
+                }
+                console.log(data);
+
+                //$location.path('/schedule');
+            } else {
+                console.log($scope.scheduleForm.$error);
+            }
+        }
 
     }]);
 
