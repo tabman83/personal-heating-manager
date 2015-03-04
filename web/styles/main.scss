@@ -1,0 +1,159 @@
+$icon-font-path: '../fonts/';
+
+// bower:scss
+@import "bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+// endbower
+
+/*
+//  Prevent text size change on orientation change.
+html {
+    -webkit-text-size-adjust: 100%;
+}*/
+
+.browserupgrade {
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
+}
+
+.align-middle {
+    vertical-align: middle;
+}
+table>thead>tr>td {
+    font-weight: bold;
+}
+table>tbody>tr {
+    cursor: pointer;
+}
+
+/* Space out content a bit */
+$base_font_size: 14px;
+$text_font_family: 'Open Sans', "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+$display_font_family: 'Open Sans', "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+
+body {
+    font-family: $text_font_family;
+    font-size: $base_font_size;
+    font-weight: 400;
+    padding-top: 70px;
+    padding-bottom: 20px;
+}
+
+div.scrollable {
+    position: absolute;
+    top: 50px;
+    padding-top: 20px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.row {
+    display: flex;
+
+    .col-xs-6 {
+        flex-grow: 1;
+        display: flex;
+    }
+}
+
+
+$color_purple: #5133AB;
+$color_red: #AC193D;
+$color_orange: #DC572E;
+$color_green: #00A600;
+$color_blue: #2672EC;
+
+// colors from http://www.creepyed.com/2012/09/windows-8-colors-hex-code/
+
+p, span, a, ul, li, button {
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+}
+
+strong {
+	font-weight: 700;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: $display_font_family;
+	font-weight: 300;
+}
+
+
+.tile {
+    width: 100%;
+	display: inline-block;
+	box-sizing: border-box;
+	background: #fff;
+	padding: 17px;
+	margin-bottom: 30px;
+    .wi {
+        font-size: 0.8em;
+    }
+    small {
+        margin-top: 6px;
+    }
+
+    .title {
+		margin-top: 0px;
+	}
+
+    &.purple, &.blue, &.red, &.orange, &.green {
+        color: #fff;
+    }
+
+    &.purple {
+        background: $color_purple;
+    }
+
+    &.red {
+        background: $color_red;
+    }
+
+    &.green {
+        background: $color_green;
+    }
+
+    &.blue {
+        background: $color_blue;
+    }
+
+    &.orange {
+        background: $color_orange;
+    }
+
+    &.darkgray {
+        background: darkgray;
+    }
+
+}
+
+.tile {
+    display: flex;
+    flex-direction: column;
+    min-height: 140px;
+
+    h1,h2,h3,h4,h5,p {
+        margin: 0px;
+        padding: 0px;
+    }
+    >:nth-last-child(2) {
+        display: flex;
+        flex-grow: 1;
+    }
+}
+
+.status-view {
+    .col-xs-6:first-child {
+        padding-right:10px;
+    }
+    .col-xs-6:last-child {
+        padding-left:10px;
+    }
+}
