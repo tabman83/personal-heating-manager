@@ -23,9 +23,7 @@ module.exports = new function() {
 
     this.start = function() {
         client = mqtt.connect('mqtt://localhost');
-
         client.on('message', onMessage);
-
         client.subscribe(temperatureTopic);
         client.subscribe(humidityTopic);
         client.subscribe(heaterTopic);

@@ -7,10 +7,21 @@ description:    scheduler
 */
 var nodeScheduler = require('node-schedule');
 var moment = require('moment');
+var mqtt    = require('mqtt');
+var nconf = require('nconf');
+var heaterTopic = nconf.get('mqtt_topic_heater');
 
 module.exports = new function() {
 
-	var scheduleFunction = function(type) {
+	var client = mqtt.connect('mqtt://localhost');
+
+	var scheduleFunction = function(type) {		
+		if(type==='ON') {
+			client.publish(heaterTopic, '1');
+		}
+		if(type==='OFF') {
+			client.publish(heaterTopic, '0');
+		}
 		console.log("Executing schedule for "+type+" @ "+moment().format() );
 	}
 
