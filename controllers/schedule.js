@@ -9,6 +9,7 @@ description:    schedule controller
 module.exports = ScheduleController;
 
 var Schedule = require('../models/schedule');
+var scheduler = require('../scheduler/');
 
 function ScheduleController() { }
 
@@ -21,6 +22,7 @@ ScheduleController.prototype = {
 				console.error(err);
 				reply( { message: 'Cannot save schedule.' } ).code(500);
 			} else {
+				scheduler.create(request.payload);
 				reply( { message: 'Success.' } );
 			}
 		});
