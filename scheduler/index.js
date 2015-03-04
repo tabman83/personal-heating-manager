@@ -9,24 +9,21 @@ var nodeScheduler = require('node-schedule');
 var moment = require('moment');
 
 module.exports = new function() {
-	/*
-	{ name: 'New schedule',
-  type: 'ON',
-  recurrence: 'oneTime',
-  repetition: [],
-  startDate: '2015-03-04T02:32:00.000Z'
-  }
-*/
+
 	var scheduleFunction = function(type) {
-		console.log("Executing schedule for "+type+" @ "+moment());
+		console.log("Executing schedule for "+type+" @ "+moment().format() );
 	}
 
 
 	this.create = function(payload) {
+		var rule, type;
+
 		if(payload.recurrence === 'oneTime') {
-			nodeScheduler.scheduleJob(moment(payload.startDate).toDate(), scheduleFunction.bind(this, payload.type));
+			type = payload.type.split('to').slice(0,1);
+			nodeScheduler.scheduleJob(moment(payload.startDate).toDate(), scheduleFunction.bind(null, type) );
 			if(payload.type === 'ONtoOFF' || payload.type === 'OFFtoON') {
-				nodeScheduler.scheduleJob(moment(payload.endDate).toDate(), scheduleFunction.bind(this, payload.type));
+				type = payload.type.split('to').slice(-1);
+				nodeScheduler.scheduleJob(moment(payload.endDate).toDate(), scheduleFunction.bind(null, type));
 			}
 		}
 		if(payload.recurrence === 'weekly') {
@@ -34,14 +31,16 @@ module.exports = new function() {
 			rule.dayOfWeek = payload.repetition.slice();
 			rule.hour = moment(payload.startDate).hour();
 			rule.minute = moment(payload.startDate).minute();
-			nodeScheduler.scheduleJob(rule, scheduleFunction.bind(this, payload.type));
+			type = payload.type.split('to').slice(0,1);
+			nodeScheduler.scheduleJob(rule, scheduleFunction.bind(null, type));
 
 			if(payload.type === 'ONtoOFF' || payload.type === 'OFFtoON') {
 				rule = new nodeScheduler.RecurrenceRule();
 				rule.dayOfWeek = payload.repetition.slice();
 				rule.hour = moment(payload.endDate).hour();
 				rule.minute = moment(payload.endDate).minute();
-				nodeScheduler.scheduleJob(rule, scheduleFunction.bind(this, payload.type));
+				type = payload.type.split('to').slice(-1);
+				nodeScheduler.scheduleJob(rule, scheduleFunction.bind(null, type));
 			}
 		}
 	}
