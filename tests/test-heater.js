@@ -20,6 +20,6 @@ client.publish(heaterTopic, new Buffer([1]), function(err) {
 				}
 				client.end();
 			});
-		}, 2000);
+		}, 5000);
 	}
 });
