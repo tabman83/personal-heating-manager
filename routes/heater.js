@@ -9,13 +9,6 @@ var routes = [{
 		auth: 'simple',
 		handler: heaterController.getHeater.bind(heaterController)
 	}
-}, {
-	method: 'PUT',
-	path: '/heater',
-	config: {
-		auth: 'simple',
-		handler: heaterController.setHeater.bind(heaterController)
-	}
 }];
 
 module.exports.routes = function (server) {

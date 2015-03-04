@@ -1,5 +1,5 @@
 /*
-file:           mqttBroker.js
+file:           index.js
 author:         Antonino Parisi
 email:          tabman83@gmail.com
 date:           25/02/2015 16:17
@@ -9,15 +9,11 @@ description:    MQTT broker wrapper
 var mosca = require('mosca');
 var nconf = require('nconf');
 
-var moscaServer = null;
+module.exports = new function() {
 
-module.exports = {
+    var moscaServer = null;
 
-    getServer: function() {
-        return moscaServer;
-    },
-
-    startMqttBroker: function(cb) {
+    this.start = function(cb) {
         var pubsubsettings = {
             //using ascoltatore
             type: 'mongo',

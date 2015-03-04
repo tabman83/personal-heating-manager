@@ -15,8 +15,8 @@ var async = require('async');
 var readLine = require ('readline');
 var Bcrypt = require('bcrypt');
 var hapiAuthBasic = require('hapi-auth-basic');
-var mqttBroker = require('./mqtt/mqttBroker');
-var mqttClient = require('./mqtt/mqttClient');
+var mqttBroker = require('./mqtt/broker');
+var mqttLogger = require('./mqtt/logger');
 
 // load up routes
 var heaterRoutes = require('./routes/heater');
@@ -112,4 +112,4 @@ if (process.platform === "win32"){
 }
 process.on('SIGINT', gracefulExit).on('SIGTERM', gracefulExit);
 
-async.series([openDbConnection, mqttBroker.startMqttBroker, startHapiServer, mqttClient.listen]);
+async.series([openDbConnection, mqttBroker.start, startHapiServer, mqttLogger.start]);
