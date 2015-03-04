@@ -1,12 +1,12 @@
+var isDebug = require('nconf').get('debug');
 var HeaterController = require('./../controllers/heater');
-
 var heaterController = new HeaterController();
 
 var routes = [{
 	method: 'GET',
 	path: '/heater',
 	config: {
-		auth: 'simple',
+		auth: isDebug ? null : 'simple',
 		handler: heaterController.getHeater.bind(heaterController)
 	}
 }];

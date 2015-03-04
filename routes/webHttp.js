@@ -1,6 +1,11 @@
+var isDebug = require('nconf').get('debug');
+
 var routes = [{
     method: 'GET',
     path: '/{path}',
+    config: {
+        auth: isDebug ? null : 'simple',
+    },
     handler: {
         directory: {
             path: './dist',
@@ -11,7 +16,7 @@ var routes = [{
     method: 'GET',
     path: '/{path*}',
     config: {
-		auth: 'simple'
+        auth: isDebug ? null : 'simple',
     },
     handler: {
         directory: {
@@ -23,7 +28,7 @@ var routes = [{
 	method: 'GET',
 	path: '/styles/{path*}',
     config: {
-		auth: 'simple'
+        auth: isDebug ? null : 'simple',
     },
     handler: {
         directory: {
@@ -34,7 +39,7 @@ var routes = [{
 	method: 'GET',
 	path: '/views/{path*}',
     config: {
-		auth: 'simple'
+        auth: isDebug ? null : 'simple',
     },
     handler: {
         directory: {
@@ -45,7 +50,7 @@ var routes = [{
 	method: 'GET',
 	path: '/scripts/{path*}',
     config: {
-		auth: 'simple'
+        auth: isDebug ? null : 'simple',
     },
     handler: {
         directory: {
@@ -56,7 +61,7 @@ var routes = [{
 	method: 'GET',
 	path: '/fonts/{path*}',
     config: {
-		auth: 'simple'
+        auth: isDebug ? null : 'simple',
     },
     handler: {
         directory: {
