@@ -1,6 +1,4 @@
-module.exports = TemperatureController;
-
-var TemperaturePoint = require('../models/temperaturePoint');
+var TemperaturePoint = require('mongoose').model('TemperaturePoint');
 
 function TemperatureController() { }
 
@@ -47,3 +45,5 @@ TemperatureController.prototype = {
 			.exec(queryCallback);
 	}
 }
+
+module.exports = TemperatureController;

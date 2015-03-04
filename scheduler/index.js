@@ -13,15 +13,15 @@ var heaterTopic = nconf.get('mqtt_topic_heater');
 
 module.exports = new function() {
 
-	var scheduleFunction = function(type) {
+	var scheduleFunction = function(name, type) {
 		var client = mqtt.connect('mqtt://localhost');
-		var message = new Buffer([type === 'ON' ? 1 : 0]);
-		console.log('Executing schedule for '+type+' @ '+moment().format() );
+		var message = new Buffer([type == 'ON' ? 1 : 0]);
+		console.log('Running schedule \''+name+'\' for '+type+' @ '+moment().format() );
 		client.publish(heaterTopic, message, function(err) {
 			if(err) {
-				console.error('Failed: ', err);
+				console.error('Schedule run failed: ', err);
 			} else {
-				console.error('Success.');
+				console.log('Schedule run successfully.');
 			}
 			client.end();
 		});
@@ -32,10 +32,10 @@ module.exports = new function() {
 
 		if(payload.recurrence === 'oneTime') {
 			type = payload.type.split('to').slice(0,1);
-			nodeScheduler.scheduleJob(moment(payload.startDate).toDate(), scheduleFunction.bind(null, type) );
+			nodeScheduler.scheduleJob(moment(payload.startDate).toDate(), scheduleFunction.bind(null, payload.name, type) );
 			if(payload.type === 'ONtoOFF' || payload.type === 'OFFtoON') {
 				type = payload.type.split('to').slice(-1);
-				nodeScheduler.scheduleJob(moment(payload.endDate).toDate(), scheduleFunction.bind(null, type));
+				nodeScheduler.scheduleJob(moment(payload.endDate).toDate(), scheduleFunction.bind(null, payload.name, type));
 			}
 		}
 		if(payload.recurrence === 'weekly') {
@@ -44,7 +44,7 @@ module.exports = new function() {
 			rule.hour = moment(payload.startDate).hour();
 			rule.minute = moment(payload.startDate).minute();
 			type = payload.type.split('to').slice(0,1);
-			nodeScheduler.scheduleJob(rule, scheduleFunction.bind(null, type));
+			nodeScheduler.scheduleJob(rule, scheduleFunction.bind(null, payload.name, type));
 
 			if(payload.type === 'ONtoOFF' || payload.type === 'OFFtoON') {
 				rule = new nodeScheduler.RecurrenceRule();
@@ -52,7 +52,7 @@ module.exports = new function() {
 				rule.hour = moment(payload.endDate).hour();
 				rule.minute = moment(payload.endDate).minute();
 				type = payload.type.split('to').slice(-1);
-				nodeScheduler.scheduleJob(rule, scheduleFunction.bind(null, type));
+				nodeScheduler.scheduleJob(rule, scheduleFunction.bind(null, payload.name, type));
 			}
 		}
 	}

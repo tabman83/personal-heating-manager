@@ -6,9 +6,12 @@ date:           25/02/2015 21:40
 description:    MQTT logger
 */
 
-var mqtt    = require('mqtt');
-var nconf   = require('nconf');
-var LogItem = require('../models/logItem');
+var mqtt                = require('mqtt');
+var nconf               = require('nconf');
+var mongoose            = require('mongoose');
+var HeaterStatus        = mongoose.model('HeaterStatus');
+var HumidityPoint       = mongoose.model('HumidityPoint');
+var TemperaturePoint    = mongoose.model('TemperaturePoint');
 var temperatureTopic    = nconf.get('mqtt_topic_temperature');
 var humidityTopic       = nconf.get('mqtt_topic_humidity');
 var heaterTopic         = nconf.get('mqtt_topic_heater');
@@ -21,23 +24,26 @@ module.exports = new function() {
         console.log('Received from '+topic);
         console.log(message);
         var value = null;
+        var item = null;
         switch(topic) {
             case temperatureTopic :
-                value = message.readFloatBE(0);
+                item = new TemperaturePoint({
+                    value: message.readFloatBE(0)
+                });
                 break;
             case humidityTopic :
-                value = message.readFloatBE(0);
+                item = new HumidityPoint({
+                    value: message.readFloatBE(0)
+                });
                 break;
             case heaterTopic :
-                var value = Boolean(message[0]);
+                item = new HeaterStatus({
+                    value: Boolean(message[0])
+                });
                 break;
             default :
         }
-        var logItem = new LogItem({
-            topic: topic,
-            value: value
-        });
-        logItem.save(function (err) {
+        item.save(function (err) {
 			if (err) {
 				console.error(err);
 			}

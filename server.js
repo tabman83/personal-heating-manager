@@ -6,8 +6,11 @@ date:           22/02/2015 23:33
 description:    main file
 */
 
-var nconf = require('nconf');
-nconf.file('./config.json');
+// load the configuration
+var nconf = require('nconf').file('./config.json');
+
+// load all the models
+require('./models/');
 
 var Hapi = require('hapi');
 var mongoose = require('mongoose');

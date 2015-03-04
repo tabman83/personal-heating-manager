@@ -1,6 +1,5 @@
-var nconf = require('nconf');
-var heaterTopic = nconf.get('mqtt_topic_heater');
-var HeaterStatus = require('../models/HeaterStatus');
+var heaterTopic = require('nconf').get('mqtt_topic_heater');
+var HeaterStatus = require('mongoose').model('HeaterStatus');
 
 function HeaterController() { }
 

@@ -5,10 +5,7 @@ email:          tabman83@gmail.com
 date:           03/03/2015 14:52
 description:    schedule controller
 */
-
-module.exports = ScheduleController;
-
-var Schedule = require('../models/schedule');
+var Schedule = require('mongoose').model('Schedule');
 var scheduler = require('../scheduler/');
 
 function ScheduleController() { }
@@ -79,3 +76,5 @@ ScheduleController.prototype = {
 			.exec(queryCallback);
 	}
 }
+
+module.exports = ScheduleController;

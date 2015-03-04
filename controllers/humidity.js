@@ -1,6 +1,4 @@
-module.exports = HumidityController;
-
-var HumidityPoint = require('../models/humidityPoint');
+var HumidityPoint = require('mongoose').model('HumidityPoint');
 
 function HumidityController() { }
 
@@ -48,6 +46,6 @@ HumidityController.prototype = {
 			}
 		}
 	}
-
-
 }
+
+module.exports = HumidityController;
