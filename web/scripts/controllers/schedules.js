@@ -19,6 +19,21 @@
             $location.path('/edit-schedule/'+id);
         }
 
+        $scope.isActive = function(schedule) {
+            if(schedule.type === 'ONtoOFF' || schedule.type === 'OFFtoON' ) {
+                return moment().isBetween(schedule.startDate, schedule.endDate);
+            }
+        }
+
+        $scope.isOutdated = function(schedule) {
+            if(schedule.type === 'ONtoOFF' || schedule.type === 'OFFtoON' ) {
+                return moment().isAfter(schedule.endDate);
+            }
+            if(schedule.type === 'ON' || schedule.type === 'OFF' ) {
+                return moment().isAfter(schedule.startDate);
+            }
+        }
+
     }]);
 
 })(angular);
