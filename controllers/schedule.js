@@ -28,7 +28,7 @@ ScheduleController.prototype = {
 	getScheduleById: function (request, reply) {
 		Schedule.findById(request.params.id, '-__v', function(err, schedule) {
 			if (err) {
-				console.log(err);
+				console.error(err);
 				reply( { message: err.message } ).code(500);
 			} else {
 				if(!schedule) {
@@ -41,10 +41,20 @@ ScheduleController.prototype = {
 	},
 
 	updateSchedule: function (request, reply) {
-		//Model.findByIdAndUpdate(id, [update], [options], [callback])
 		Schedule.findByIdAndUpdate(request.params.id, request.payload, function(err, schedule) {
 			if (err) {
-				console.log(err);
+				console.error(err);
+				reply( { message: err.message } ).code(500);
+			} else {
+				reply( { message: 'Success.' } );
+			}
+		});
+	},
+
+	deleteSchedule: function (request, reply) {
+		Schedule.findByIdAndRemove(request.params.id, request.payload, function(err, schedule) {
+			if (err) {
+				console.error(err);
 				reply( { message: err.message } ).code(500);
 			} else {
 				reply( { message: 'Success.' } );

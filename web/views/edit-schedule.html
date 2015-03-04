@@ -1,6 +1,6 @@
 <div class="row" ng-controller="EditScheduleController">
     <div class="col-lg-12">
-        <form class="form-horizontal" name="scheduleForm" ng-submit="saveSchedule()">
+        <form class="form-horizontal" name="scheduleForm" ng-submit="save()">
             <fieldset ng-disabled="isDisabled">
                 <div class="form-group">
                     <label for="inputName" class="col-sm-2 control-label">Name</label>
@@ -109,7 +109,7 @@
                         <div class="alert alert-info" role="alert">{{executionLabel}}</div>
                         <div class="alert alert-danger" role="alert" ng-if="isErrored">{{errorText}}</div>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Save</button>
-                        <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
+                        <a ng-click="delete()" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
                         <a class="btn btn-default" href="#/schedules">Cancel</a>
                     </div>
                 </div>

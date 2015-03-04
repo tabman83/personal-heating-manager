@@ -36,6 +36,13 @@ var routes = [{
 		auth: isDebug ? null : 'simple',
 		handler: scheduleController.updateSchedule.bind(scheduleController)
 	}
+}, {
+	method: 'DELETE',
+	path: '/schedules/{id}',
+	config: {
+		auth: isDebug ? null : 'simple',
+		handler: scheduleController.deleteSchedule.bind(scheduleController)
+	}
 }];
 
 module.exports.routes = function (server) {

@@ -140,7 +140,24 @@
             $location.path('/schedules');
         });
 
-        $scope.saveSchedule = function() {
+        $scope.delete = function() {
+            if(!confirm('Are you sure you want to delete this schedule ?') ) {
+                return;
+            }
+
+            $scope.isDisabled = true;
+            $scope.isErrored = false;
+            schedule.$delete(function() {
+                $location.path('/schedules');
+            }, function(error) {
+                $scope.isErrored = true;
+                $scope.errorText = error.statusText || 'Cannot contact server';
+            }).finally(function() {
+                $scope.isDisabled = false;
+            });
+        }
+
+        $scope.save = function() {
             if($scope.scheduleForm.$valid) {
                 schedule.name = $scope.form.name;
                 schedule.type = $scope.form.type;
