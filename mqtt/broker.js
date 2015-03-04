@@ -28,7 +28,7 @@ module.exports = new function() {
                 bundle: true,
                 static: './'
             },
-            port: 1883,           //mosca (mqtt) port
+            port: nconf.get('mqtt_port') || 1883,           //mosca (mqtt) port
             backend: pubsubsettings   //pubsubsettings is the object we created above
         };
 
