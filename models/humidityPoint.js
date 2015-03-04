@@ -7,8 +7,9 @@ description:    humidity point model
 */
 
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var humidityPointSchema = mongoose.Schema({
+var humidityPointSchema = new Schema({
     value: Number,
 	date: {
 		type: Date,
@@ -16,6 +17,4 @@ var humidityPointSchema = mongoose.Schema({
 	},
 });
 
-var HumidityPoint = mongoose.model('HumidityPoint', humidityPointSchema);
-
-module.exports = HumidityPoint;
+module.exports = mongoose.model('HumidityPoint', humidityPointSchema);

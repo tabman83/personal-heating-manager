@@ -13,18 +13,19 @@ var heaterTopic = nconf.get('mqtt_topic_heater');
 
 module.exports = new function() {
 
-	var client = mqtt.connect('mqtt://localhost');
-
-	var scheduleFunction = function(type) {		
-		if(type==='ON') {
-			client.publish(heaterTopic, '1');
-		}
-		if(type==='OFF') {
-			client.publish(heaterTopic, '0');
-		}
-		console.log("Executing schedule for "+type+" @ "+moment().format() );
+	var scheduleFunction = function(type) {
+		var client = mqtt.connect('mqtt://localhost');
+		var message = new Buffer([type === 'ON' ? 1 : 0]);
+		console.log('Executing schedule for '+type+' @ '+moment().format() );
+		client.publish(heaterTopic, message, function(err) {
+			if(err) {
+				console.error('Failed: ', err);
+			} else {
+				console.error('Success.');
+			}
+			client.end();
+		});
 	}
-
 
 	this.create = function(payload) {
 		var rule, type;

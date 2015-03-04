@@ -7,8 +7,9 @@ description:    temperature point model
 */
 
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var temperaturePointSchema = mongoose.Schema({
+var temperaturePointSchema = new Schema({
     value: Number,
 	date: {
 		type: Date,
@@ -16,6 +17,4 @@ var temperaturePointSchema = mongoose.Schema({
 	},
 });
 
-var TemperaturePoint = mongoose.model('TemperaturePoint', temperaturePointSchema);
-
-module.exports = TemperaturePoint;
+module.exports = mongoose.model('TemperaturePoint', temperaturePointSchema);

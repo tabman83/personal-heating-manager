@@ -7,8 +7,9 @@ description:    schedule model
 */
 
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var scheduleSchema = mongoose.Schema({
+var scheduleSchema = new Schema({
     name: String,
     recurrence: String,
     type: String,
@@ -21,6 +22,4 @@ var scheduleSchema = mongoose.Schema({
     }
 });
 
-var Schedule = mongoose.model('Schedule', scheduleSchema);
-
-module.exports = Schedule;
+module.exports = mongoose.model('Schedule', scheduleSchema);

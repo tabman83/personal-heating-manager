@@ -7,8 +7,9 @@ description:    heating status model
 */
 
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var heaterStatusSchema = mongoose.Schema({
+var heaterStatusSchema = new Schema({
     value: Boolean,
 	date: {
 		type: Date,
@@ -16,6 +17,4 @@ var heaterStatusSchema = mongoose.Schema({
 	},
 });
 
-var HeaterStatus = mongoose.model('HeaterStatus', heaterStatusSchema);
-
-module.exports = HeaterStatus;
+module.exports = mongoose.model('HeaterStatus', heaterStatusSchema);

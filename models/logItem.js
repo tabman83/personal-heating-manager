@@ -7,16 +7,15 @@ description:    log item model
 */
 
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var logItemSchema = mongoose.Schema({
-    name: String,
-    value: Number,
+var logItemSchema = new Schema({
+    topic: String,
+    value: Schema.Types.Mixed,
     date: {
         type: Date,
         default: Date.now
     }
 });
 
-var LogItem = mongoose.model('LogItem', logItemSchema);
-
-module.exports = LogItem;
+module.exports = mongoose.model('LogItem', logItemSchema);
