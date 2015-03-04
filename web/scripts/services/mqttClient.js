@@ -33,7 +33,7 @@
                 /*jshint validthis:true */
                 var context = this;
                 angular.forEach(callbacks, function(callback) {
-                    $timeout( callback.bind(context, message.payloadString) );
+                    $timeout( callback.bind(context, message.payloadBytes) );
                 });
             }
 
@@ -43,11 +43,7 @@
 
             this.publish = function(queueName, message) {
                 connectionEstablishedDefer.promise.then( function() {
-                    var encodedMessage = message;
-                    if( typeof message === 'boolean' ) {
-                        encodedMessage = +message;
-                    }
-                    var pahoMessage = new Paho.MQTT.Message(encodedMessage.toString());
+                    var pahoMessage = new Paho.MQTT.Message(message);
                     pahoMessage.destinationName = queueName;
                     client.send(pahoMessage);
                 });

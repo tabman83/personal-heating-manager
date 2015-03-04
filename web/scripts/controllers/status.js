@@ -29,16 +29,24 @@
             }
         };
 
-        var heaterHandler = mqttClient.subscribe(appSettings.mqtt.topics.heater, function(value) {
-            $scope.heaterStatus = Boolean(parseInt(value, 10));
+        var heaterHandler = mqttClient.subscribe(appSettings.mqtt.topics.heater, function(buffer) {
+            $scope.heaterStatus = Boolean(buffer[0]);
         });
 
-        var tempHandler = mqttClient.subscribe(appSettings.mqtt.topics.temperature, function(value) {
-            $scope.insideTemp = parseFloat(value);
+        var tempHandler = mqttClient.subscribe(appSettings.mqtt.topics.temperature, function(buffer) {
+            var dataview = new DataView(new ArrayBuffer(4));
+            for(var i=0; i<buffer.length; i++) {
+                dataview.setUint8(i,buffer[i]);
+            }
+            $scope.insideTemp = dataview.getFloat32(0);
         });
 
-        var humidityHandler = mqttClient.subscribe(appSettings.mqtt.topics.humidity, function(value) {
-            $scope.insideHumidity = parseFloat(value);
+        var humidityHandler = mqttClient.subscribe(appSettings.mqtt.topics.humidity, function(buffer) {
+            var dataview = new DataView(new ArrayBuffer(4));
+            for(var i=0; i<buffer.length; i++) {
+                dataview.setUint8(i,buffer[i]);
+            }
+            $scope.insideHumidity = dataview.getFloat32(0);
         });
 
         yahooWeatherClient.getWeather().then(function(data) {
