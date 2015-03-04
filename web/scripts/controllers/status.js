@@ -65,15 +65,15 @@
         });
 
         apiClient.HeaterStatus.query({limit: 1}, function(result) {
-            $scope.heaterStatus = result[0].value;
+            $scope.heaterStatus = result.length ? result[0].value : null;
         });
 
         apiClient.Temperature.query({limit: 1}, function(result) {
-            $scope.insideTemp = result[0].value;
+            $scope.insideTemp = result.length ? result[0].value : null;
         });
 
         apiClient.Humidity.query({limit: 1}, function(result) {
-            $scope.insideHumidity = result[0].value;
+            $scope.insideHumidity = result.length ? result[0].value : null;
         });
 
     }]);
