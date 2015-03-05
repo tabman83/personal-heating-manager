@@ -150,10 +150,26 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .status-view {
+    .row {
+        margin: 0px;
+        padding: 0px;
+
+        .col-xs-6 {
+            margin: 3px;
+            padding: 0px;
+
+            .tile {
+                margin:0px;
+            }
+        }
+    }
+    /*
     .col-xs-6:first-child {
         padding-right:10px;
     }
     .col-xs-6:last-child {
         padding-left:10px;
-    }
+    }*/
+
+
 }
