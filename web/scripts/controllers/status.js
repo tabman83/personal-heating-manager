@@ -20,6 +20,7 @@
         $scope.heatingButtonDisabled = false;
         $scope.nextEventWhat = 'None';
         $scope.nextEventWhen = '';
+        $scope.heatingStatusWhen = '';
 
         $scope.switchHeating = function() {
 
@@ -36,6 +37,7 @@
 
         var heatingHandler = mqttClient.subscribe(appSettings.mqtt.topics.heating, function(buffer) {
             $scope.heatingStatus = Boolean(buffer[0]);
+            $scope.heatingStatusWhen = 'now';
         });
 
         var tempHandler = mqttClient.subscribe(appSettings.mqtt.topics.temperature, function(buffer) {
@@ -81,7 +83,11 @@
         })
 
         HeatingStatus.query({limit: 1}, function(result) {
-            $scope.heatingStatus = result.length ? result[0].value : null;
+            if( result.length ) {
+                var status = result.pop();
+                $scope.heatingStatus = status.value;
+                $scope.heatingStatusWhen = moment(status.date).fromNow();
+            }
         });
 
         Temperature.query({limit: 1}, function(result) {
