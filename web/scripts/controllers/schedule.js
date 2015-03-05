@@ -13,9 +13,6 @@
         $scope.isEditMode = $routeParams.id !== undefined;
         $scope.isNewMode = $routeParams.id === undefined;
 
-        console.log('isEditMode: '+$scope.isEditMode);
-        console.log('isNewMode: '+$scope.isNewMode);
-
         var weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
         function getAmoment(date, time) {
