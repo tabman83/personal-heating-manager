@@ -15,8 +15,8 @@
             $scope.schedules = data;
         });
 
-        $scope.edit = function(id) {
-            $location.path('/edit-schedule/'+id);
+        $scope.go = function(where) {
+            $location.path(where);
         }
 
         $scope.isActive = function(schedule) {

@@ -16,7 +16,10 @@ ScheduleController.prototype = {
 		new Schedule(request.payload).save(function (err) {
 			if (err) {
 				console.error(err);
-				reply( { message: 'Cannot save schedule.' } ).code(500);
+				reply( {
+					message: err.err,
+					code: err.code
+				} ).code(500);
 				return;
 			}
 

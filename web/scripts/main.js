@@ -17,10 +17,10 @@
                 templateUrl: 'views/stats.html'
             }).when('/schedules', {
                 templateUrl: 'views/schedules.html'
-            }).when('/new-schedule', {
-                templateUrl: 'views/new-schedule.html'
-            }).when('/edit-schedule/:id', {
-                templateUrl: 'views/edit-schedule.html'
+            }).when('/schedule', {
+                templateUrl: 'views/schedule.html'
+            }).when('/schedule/:id', {
+                templateUrl: 'views/schedule.html'
             }).otherwise({
                 redirectTo: '/status'
             });

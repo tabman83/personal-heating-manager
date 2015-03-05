@@ -4,7 +4,7 @@
 
         <div class="col-lg-12">
 
-            <a href="#/new-schedule" class="btn btn-primary"><i class="fa fa-plus"></i> New Schedule</a>
+            <a href="#/schedule" class="btn btn-primary"><i class="fa fa-plus"></i> New Schedule</a>
 
             <table class="table">
                 <thead>
@@ -14,7 +14,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="schedule in schedules" ng-click="edit(schedule._id)" ng-class="{ 'bg-info': isActive(schedule), 'bg-warning': isOutdated(schedule) }">
+                    <tr ng-repeat="schedule in schedules" ng-click="go('/schedule/'+schedule._id)" ng-class="{ 'bg-info': isActive(schedule), 'bg-warning': isOutdated(schedule) }">
                         <td ng-bind="schedule.name"></td>
                         <td ng-bind-html="schedule | scheduleText"></td>
                     </tr>
