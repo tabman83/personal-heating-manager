@@ -1,5 +1,5 @@
 /*
-file:           heaterStatus.js
+file:           heatingStatus.js
 author:         Antonino Parisi
 email:          tabman83@gmail.com
 date:           28/02/2015 15:43
@@ -9,7 +9,7 @@ description:    heating status model
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var heaterStatusSchema = new Schema({
+var heatingStatusSchema = new Schema({
     value: Boolean,
 	date: {
 		type: Date,
@@ -17,4 +17,4 @@ var heaterStatusSchema = new Schema({
 	},
 });
 
-module.exports = mongoose.model('HeaterStatus', heaterStatusSchema);
+module.exports = mongoose.model('HeatingStatus', heatingStatusSchema);

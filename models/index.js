@@ -6,7 +6,6 @@ date:           04/03/2015 16:09
 description:    index for mongoose models
 */
 
-require('./heaterStatus');
-require('./humidityPoint');
 require('./schedule');
-require('./temperaturePoint');
+require('./logItem');
+require('./heatingStatus');

@@ -17,7 +17,7 @@
         mqtt: {
             port: 3001,
             topics: {
-                heater: 'PHM/heater',
+                heating: 'PHM/heating',
                 temperature: 'PHM/temperature',
                 humidity: 'PHM/humidity'
             }

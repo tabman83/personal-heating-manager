@@ -1,49 +1,46 @@
-var HumidityPoint = require('mongoose').model('HumidityPoint');
+var humidityTopic = require('nconf').get('mqtt_topic_humidity');
+var LogItem = require('mongoose').model('LogItem');
 
 function HumidityController() { }
 
 HumidityController.prototype = {
 
 	insertHumidity: function (request, reply) {
-		var value = parseInt(request.payload.value, 10);
-		if( typeof(value) !== 'number' || isNaN(value) ) {
-			reply( { message: 'The parameter \'value\' is not a number.' } ).code(301);
-		} else {
-			var humidityPoint = new HumidityPoint({
-				value: value
-			});
-			humidityPoint.save(function (err) {
-				if (err) {
-					console.error(err);
-					reply( { message: 'Cannot save humidity.' } ).code(500);
-				} else {
-					reply( { message: 'Success.' } );
-				}
-			});
-		}
+		new LogItem({
+			topic: humidityTopic,
+			value: request.payload.value
+		}).save(function (err) {
+			if (err) {
+				console.error(err);
+				reply( { message: 'Cannot save humidity.' } ).code(500);
+				return;
+			}
+			reply( { message: 'Success.' } );
+		});
 	},
 
 	getHumidity: function (request, reply) {
 
 		var limit = parseInt(request.query.limit, 10);
-		if( typeof(value) !== 'number' ) {
-			limit: 24*30;
+		if( typeof(limit) !== 'number' || isNaN(limit) ) {
+			limit: -1;
 		}
 
-		HumidityPoint
-			.find()
+		LogItem
+			.find({ topic: humidityTopic })
 			.sort({ date: 'desc' })
 			.select({ __v: 0 })
 			.limit(limit)
+			.lean()
 			.exec(queryCallback);
 
-		function queryCallback(err, humidityPoints) {
+		function queryCallback(err, result) {
 			if (err) {
 				console.error(err);
 				reply( { message: 'Cannot retrieve humidities.' } ).code(500);
-			} else {
-				reply(humidityPoints);
+				return;
 			}
+			reply(result);
 		}
 	}
 }

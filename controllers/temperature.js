@@ -1,48 +1,48 @@
-var TemperaturePoint = require('mongoose').model('TemperaturePoint');
+var temperatureTopic = require('nconf').get('mqtt_topic_temperature');
+var LogItem = require('mongoose').model('LogItem');
+
 
 function TemperatureController() { }
 
 TemperatureController.prototype = {
 
 	insertTemperature: function (request, reply) {
-		var value = parseInt(request.payload.value, 10);
-		if( typeof(value) !== 'number' || isNaN(value) ) {
-			reply( { message: 'The parameter \'value\' is not a number.' } ).code(301);
-		} else {
-			var temperaturePoint = new TemperaturePoint({ value: value });
-			temperaturePoint.save(function (err) {
-				if (err) {
-					console.error(err);
-					reply( { message: 'Cannot save temperature.' } ).code(500);
-				} else {
-					reply( { message: 'Success.' } );
-				}
-			});
-		}
+		new LogItem({
+			topic: temperatureTopic,
+			value: request.payload.value
+		}).save(function (err) {
+			if (err) {
+				console.error(err);
+				reply( { message: 'Cannot save temperature.' } ).code(500);
+				return;
+			}
+			reply( { message: 'Success.' } );
+		});
 	},
 
 	getTemperature: function (request, reply) {
 
 		var limit = parseInt(request.query.limit, 10);
-		if( typeof(value) !== 'number' ) {
-			limit: 24*30;
+		if( typeof(limit) !== 'number' || isNaN(limit) ) {
+			limit: -1;
 		}
 
-		function queryCallback(err, temperaturePoints) {
+		LogItem
+			.find({ topic: temperatureTopic })
+			.sort({ date: 'desc' })
+			.select({ __v: 0 })
+			.limit(limit)
+			.lean()
+			.exec(queryCallback);
+
+		function queryCallback(err, result) {
 			if (err) {
 				console.error(err);
 				reply( { message: 'Cannot retrieve temperatures.' } ).code(500);
-			} else {
-				reply(temperaturePoints);
+				return;
 			}
+			reply(result);
 		}
-
-		TemperaturePoint
-			.find()
-			.sort({ date: 'desc' })
-			.select({ _id: 0, __v: 0 })
-			.limit(limit)
-			.exec(queryCallback);
 	}
 }
 

@@ -9,12 +9,11 @@ description:    MQTT logger
 var mqtt                = require('mqtt');
 var nconf               = require('nconf');
 var mongoose            = require('mongoose');
-var HeaterStatus        = mongoose.model('HeaterStatus');
-var HumidityPoint       = mongoose.model('HumidityPoint');
-var TemperaturePoint    = mongoose.model('TemperaturePoint');
+var LogItem             = mongoose.model('LogItem');
+var HeatingStatus       = mongoose.model('HeatingStatus');
 var temperatureTopic    = nconf.get('mqtt_topic_temperature');
 var humidityTopic       = nconf.get('mqtt_topic_humidity');
-var heaterTopic         = nconf.get('mqtt_topic_heater');
+var heatingTopic         = nconf.get('mqtt_topic_heating');
 
 module.exports = new function() {
 
@@ -23,25 +22,16 @@ module.exports = new function() {
     var onMessage = function(topic, message) {
         console.log('Received from '+topic);
         console.log(message);
-        var value = null;
         var item = null;
         switch(topic) {
-            case temperatureTopic :
-                item = new TemperaturePoint({
-                    value: message.readFloatBE(0)
-                });
-                break;
-            case humidityTopic :
-                item = new HumidityPoint({
-                    value: message.readFloatBE(0)
-                });
-                break;
-            case heaterTopic :
-                item = new HeaterStatus({
-                    value: Boolean(message[0])
-                });
+            case heatingTopic :
+                item = new HeatingStatus();
+                item.value = Boolean(message[0]);
                 break;
             default :
+                item = new LogItem();
+                item.topic = topic;
+                item.value = message.readFloatBE(0);
         }
         item.save(function (err) {
 			if (err) {
@@ -55,7 +45,7 @@ module.exports = new function() {
         client.on('message', onMessage);
         client.subscribe(temperatureTopic);
         client.subscribe(humidityTopic);
-        client.subscribe(heaterTopic);
+        client.subscribe(heatingTopic);
     }
 
 }

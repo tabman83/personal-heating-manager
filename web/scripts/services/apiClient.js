@@ -13,11 +13,11 @@
         var baseUrl = window.location.protocol + '//' + window.location.hostname + ':' + appSettings.api.port;
 
         return {
-            HeaterStatus: $resource(baseUrl+'/heater'),
+            HeatingStatus: $resource(baseUrl+'/heating'),
             Temperature: $resource(baseUrl+'/temperatures'),
             Humidity: $resource(baseUrl+'/humidities'),
             Schedule: $resource(baseUrl+'/schedules/:id', {
-                id: '@_id' 
+                id: '@_id'
             }, {
                 update: {
                     method: 'PUT' // this method issues a PUT request

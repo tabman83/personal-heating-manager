@@ -17,20 +17,25 @@
         $scope.outsideWindChill = '?';
         $scope.weatherIcon = '?';
         $scope.weatherStatus = '?';
-        $scope.heaterButtonDisabled = false;
+        $scope.heatingButtonDisabled = false;
+        $scope.nextEventWhat = '?';
+        $scope.nextEventWhen = '';
 
         $scope.switchHeating = function() {
-            if( $scope.heaterStatus !== undefined ) {
-                mqttClient.publish( appSettings.mqtt.topics.heater, !$scope.heaterStatus );
-                $scope.heaterButtonDisabled = true;
+
+            if( $scope.heatingStatus !== undefined ) {
+                var message = new Uint8Array(1);
+                message[0] = Number(!$scope.heatingtatus);
+                mqttClient.publish( appSettings.mqtt.topics.heating, message );
+                $scope.heatingButtonDisabled = true;
                 $timeout(function() {
-                    $scope.heaterButtonDisabled = false;
+                    $scope.heatingButtonDisabled = false;
                 }, 2000);
             }
         };
 
-        var heaterHandler = mqttClient.subscribe(appSettings.mqtt.topics.heater, function(buffer) {
-            $scope.heaterStatus = Boolean(buffer[0]);
+        var heatingHandler = mqttClient.subscribe(appSettings.mqtt.topics.heating, function(buffer) {
+            $scope.heatingStatus = Boolean(buffer[0]);
         });
 
         var tempHandler = mqttClient.subscribe(appSettings.mqtt.topics.temperature, function(buffer) {
@@ -59,13 +64,21 @@
 
 
         $scope.$on('$destroy', function() {
-            mqttClient.unsubscribe(heaterHandler);
+            mqttClient.unsubscribe(heatingHandler);
             mqttClient.unsubscribe(tempHandler);
             mqttClient.unsubscribe(humidityHandler);
         });
 
-        apiClient.HeaterStatus.query({limit: 1}, function(result) {
-            $scope.heaterStatus = result.length ? result[0].value : null;
+        apiClient.Schedule.query({limit: 1}, function(result) {
+            if(result.length) {
+                var schedule = result[0];
+                $scope.nextEventWhat = schedule.type.split('to').slice(0,1).pop();
+                $scope.nextEventWhen = moment(schedule.startDate).format('ddd lll');
+            }
+        })
+
+        apiClient.HeatingStatus.query({limit: 1}, function(result) {
+            $scope.heatingStatus = result.length ? result[0].value : null;
         });
 
         apiClient.Temperature.query({limit: 1}, function(result) {

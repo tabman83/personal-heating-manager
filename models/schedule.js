@@ -10,11 +10,29 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var scheduleSchema = new Schema({
-    name: String,
-    recurrence: String,
-    type: String,
-    startDate: Date,
-    endDate: Date,
+    name: {
+        type: String,
+        required: true,
+        index: {
+            unique: true
+        }
+    },
+    recurrence: {
+        type: String,
+        required: true
+    },
+    type: {
+        type: String,
+        required: true
+    },
+    startDate: {
+        type: Date,
+        required: true
+    },
+    endDate: {
+        type: Date,
+        required: false,
+    },
     repetition: Array,
     created: {
         type: Date,

@@ -20,13 +20,7 @@ var Bcrypt = require('bcrypt');
 var hapiAuthBasic = require('hapi-auth-basic');
 var mqttBroker = require('./mqtt/broker');
 var mqttLogger = require('./mqtt/logger');
-
-// load up routes
-var heaterRoutes = require('./routes/heater');
-var humidityRoutes = require('./routes/humidity');
-var temperatureRoutes = require('./routes/temperature');
-var scheduleRoutes = require('./routes/schedule');
-var webHttpRoutes = require('./routes/webHttp');
+var routes = require('./routes/');
 
 function openDbConnection(cb) {
     mongoose.connection.on('error', function(err) {
@@ -81,11 +75,7 @@ function startHapiServer(cb) {
         //server.auth.default('simple');
     });
 
-    heaterRoutes.routes(server);
-    humidityRoutes.routes(server);
-    temperatureRoutes.routes(server);
-    scheduleRoutes.routes(server);
-    webHttpRoutes.routes(server);
+    routes(server);
 
     // Start the server
     server.start(function() {

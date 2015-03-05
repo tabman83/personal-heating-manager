@@ -3,14 +3,15 @@
 
     <div class="row">
         <div class="col-xs-6">
-            <div class="tile" ng-class="{red: heaterStatus !== true, green: heaterStatus === true, darkgray: heaterButtonDisabled }" ng-click="heaterButtonDisabled ? angular.noop() : switchHeating()">
-                <h1 class="title">{{heaterStatus | booleanOnOff}}</h1>
+            <div class="tile" ng-class="{red: heatingStatus !== true, green: heatingStatus === true, darkgray: heatingButtonDisabled }" ng-click="heatingButtonDisabled ? angular.noop() : switchHeating()">
+                <h1 class="title">{{heatingStatus | booleanOnOff}}</h1>
                 <p>HEATING status</p>
             </div>
         </div>
         <div class="col-xs-6">
-            <div class="tile red">
-                <h3 class="title">OFF in 12 min</h3>
+            <div class="tile" ng-class="{red: nextEventWhat === 'OFF', green: nextEventWhat === 'ON', darkgray: nextEventWhat === '?' }">
+                <h1 class="title">{{nextEventWhat}}</h1>
+                <small>{{nextEventWhen}}</small>
                 <p>NEXT event</p>
             </div>
         </div>
