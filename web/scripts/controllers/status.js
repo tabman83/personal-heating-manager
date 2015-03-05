@@ -26,7 +26,7 @@
 
             if( $scope.heatingStatus !== undefined ) {
                 var message = new Uint8Array(1);
-                message[0] = Number(!$scope.heatingtatus);
+                message[0] = Number(!$scope.heatingStatus);
                 mqttClient.publish( appSettings.mqtt.topics.heating, message );
                 $scope.heatingButtonDisabled = true;
                 $timeout(function() {
