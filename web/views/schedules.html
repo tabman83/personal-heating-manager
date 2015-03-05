@@ -4,9 +4,13 @@
 
         <div class="col-lg-12">
 
-            <a href="#/schedule" class="btn btn-primary"><i class="fa fa-plus"></i> New Schedule</a>
+            <p>
+                <a href="#/schedule" class="btn btn-primary"><i class="fa fa-plus"></i> New Schedule</a>
+            </p>
 
-            <table class="table">
+            <div class="alert alert-info" ng-if="!schedules.length" role="alert">No schedules</div>
+
+            <table class="table" ng-if="schedules.length">
                 <thead>
                     <tr>
                         <td>Name</td>
