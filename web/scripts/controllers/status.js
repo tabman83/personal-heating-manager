@@ -8,7 +8,7 @@
 (function(angular, undefined) {
     'use strict';
 
-    angular.module('PHMApp').controller('StatusController', ['$rootScope', '$scope', '$timeout', 'mqttClient', 'yahooWeatherClient', 'apiClient', 'appSettings', function($rootScope, $scope, $timeout, mqttClient, yahooWeatherClient, apiClient, appSettings) {
+    angular.module('PHMApp').controller('StatusController', ['$rootScope', '$scope', '$timeout', 'mqttClient', 'yahooWeatherClient', 'appSettings', 'HeatingStatus', 'Temperature', 'Humidity', 'Schedule', function($rootScope, $scope, $timeout, mqttClient, yahooWeatherClient, appSettings, HeatingStatus, Temperature, Humidity, Schedule) {
 
         $scope.insideTemp = '?';
         $scope.outsideTemp = '?';
@@ -69,7 +69,7 @@
             mqttClient.unsubscribe(humidityHandler);
         });
 
-        apiClient.Schedule.query({limit: 1}, function(result) {
+        Schedule.query({limit: 1}, function(result) {
             if(result.length) {
                 var schedule = result[0];
                 var date = moment(schedule.startDate);
@@ -80,15 +80,15 @@
             }
         })
 
-        apiClient.HeatingStatus.query({limit: 1}, function(result) {
+        HeatingStatus.query({limit: 1}, function(result) {
             $scope.heatingStatus = result.length ? result[0].value : null;
         });
 
-        apiClient.Temperature.query({limit: 1}, function(result) {
+        Temperature.query({limit: 1}, function(result) {
             $scope.insideTemp = result.length ? result[0].value : null;
         });
 
-        apiClient.Humidity.query({limit: 1}, function(result) {
+        Humidity.query({limit: 1}, function(result) {
             $scope.insideHumidity = result.length ? result[0].value : null;
         });
 

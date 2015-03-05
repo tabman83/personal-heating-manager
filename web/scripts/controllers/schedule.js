@@ -8,7 +8,7 @@
 (function(angular, undefined) {
     'use strict';
 
-    angular.module('PHMApp').controller('ScheduleController', ['$rootScope', '$scope', '$routeParams', '$location', 'apiClient', function($rootScope, $scope, $routeParams, $location, apiClient) {
+    angular.module('PHMApp').controller('ScheduleController', ['$rootScope', '$scope', '$routeParams', '$location', 'Schedule', function($rootScope, $scope, $routeParams, $location, Schedule) {
 
         $scope.isEditMode = $routeParams.id !== undefined;
         $scope.isNewMode = $routeParams.id === undefined;
@@ -120,10 +120,10 @@
             $scope.executionLabel = text;
         });
 
-        var schedule = new apiClient.Schedule();
+        var schedule = new Schedule();
 
         if( $scope.isEditMode ) {
-            schedule = apiClient.Schedule.get({
+            schedule = Schedule.get({
                 id: $routeParams.id
             }, function() {
 

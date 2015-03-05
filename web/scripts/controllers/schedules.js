@@ -8,12 +8,10 @@
 (function(angular, undefined) {
     'use strict';
 
-    angular.module('PHMApp').controller('SchedulesController', ['$rootScope', '$scope', '$location', 'apiClient', function($rootScope, $scope, $location, apiClient) {
+    angular.module('PHMApp').controller('SchedulesController', ['$rootScope', '$scope', '$location', 'Schedule', function($rootScope, $scope, $location, Schedule) {
 
         $scope.schedules = [];
-        apiClient.Schedule.query(function(data) {
-            $scope.schedules = data;
-        });
+        $scope.schedules = Schedule.query();
 
         $scope.go = function(where) {
             $location.path(where);
