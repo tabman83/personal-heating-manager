@@ -1,5 +1,5 @@
-# personal-heater-manager
-A personal heater manager system with Arduino and Raspberry Pi.
+# personal-heating-manager
+A personal heating manager system with Arduino and Raspberry Pi.
 
 ## Prerequisites
 

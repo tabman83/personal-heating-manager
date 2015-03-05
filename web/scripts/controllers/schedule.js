@@ -8,7 +8,7 @@
 (function(angular, undefined) {
     'use strict';
 
-    angular.module('PHMApp').controller('ScheduleController', ['$rootScope', '$scope', '$routeParams', '$location', 'Schedule', function($rootScope, $scope, $routeParams, $location, Schedule) {
+    angular.module('PHMApp').controller('ScheduleController', ['$rootScope', '$scope', '$window', '$routeParams', '$location', 'Schedule', function($rootScope, $scope, $window, $routeParams, $location, Schedule) {
 
         $scope.isEditMode = $routeParams.id !== undefined;
         $scope.isNewMode = $routeParams.id === undefined;
@@ -43,7 +43,7 @@
             startTime: now,
             endDate: now,
             endTime: now
-        }
+        };
 
         $scope.$watch('form.startDate', function(newValue) {
             $scope.minEndDate = moment(newValue).format('YYYY-MM-DD');
@@ -146,7 +146,7 @@
         }
 
         $scope.delete = function() {
-            if(!confirm('Are you sure you want to delete this schedule ?')) {
+            if( !$window.confirm('Are you sure you want to delete this schedule ?') ) {
                 return;
             }
 
@@ -160,7 +160,7 @@
             }).finally(function() {
                 $scope.isDisabled = false;
             });
-        }
+        };
 
         $scope.save = function() {
             if($scope.scheduleForm.$invalid) {
@@ -191,7 +191,7 @@
                 $location.path('/schedules');
             }, function(error) {
                 $scope.isErrored = true;
-                if(error.code = 11000) {
+                if(error.code === 11000) {
                     $scope.errorText = 'A schedule with the same name already exists.';
                 } else {
                     $scope.errorText = error.data.message || error.statusText || 'Cannot contact server';
@@ -199,7 +199,7 @@
             }).finally(function() {
                 $scope.isDisabled = false;
             });
-        }
+        };
 
     }]);
 

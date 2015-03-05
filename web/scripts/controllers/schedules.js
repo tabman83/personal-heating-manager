@@ -15,13 +15,13 @@
 
         $scope.go = function(where) {
             $location.path(where);
-        }
+        };
 
         $scope.isActive = function(schedule) {
             if(schedule.type === 'ONtoOFF' || schedule.type === 'OFFtoON' ) {
                 return moment().isBetween(schedule.startDate, schedule.endDate);
             }
-        }
+        };
 
         $scope.isOutdated = function(schedule) {
             if(schedule.type === 'ONtoOFF' || schedule.type === 'OFFtoON' ) {
@@ -30,7 +30,7 @@
             if(schedule.type === 'ON' || schedule.type === 'OFF' ) {
                 return moment().isAfter(schedule.startDate);
             }
-        }
+        };
 
     }]);
 

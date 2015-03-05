@@ -80,7 +80,7 @@
                     $scope.nextEventWhen = date.format('ddd lll');
                 }
             }
-        })
+        });
 
         HeatingStatus.query({limit: 1}, function(result) {
             if( result.length ) {

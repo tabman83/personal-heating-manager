@@ -11,7 +11,7 @@
     angular.module('PHMApp').filter('booleanOnOff', [function() {
 
         return function(input) {
-            if( typeof(input) === 'undefined' || input == null ) {
+            if( typeof(input) === 'undefined' || input === null ) {
                 return '?';
             }
             return input ? 'ON' : 'OFF';
