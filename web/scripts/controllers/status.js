@@ -18,7 +18,7 @@
         $scope.weatherIcon = '?';
         $scope.weatherStatus = '?';
         $scope.heatingButtonDisabled = false;
-        $scope.nextEventWhat = '?';
+        $scope.nextEventWhat = 'None';
         $scope.nextEventWhen = '';
 
         $scope.switchHeating = function() {
@@ -72,8 +72,11 @@
         apiClient.Schedule.query({limit: 1}, function(result) {
             if(result.length) {
                 var schedule = result[0];
-                $scope.nextEventWhat = schedule.type.split('to').slice(0,1).pop();
-                $scope.nextEventWhen = moment(schedule.startDate).format('ddd lll');
+                var date = moment(schedule.startDate);
+                if(moment().isBefore(date)) {
+                    $scope.nextEventWhat = schedule.type.split('to').slice(0,1).pop();
+                    $scope.nextEventWhen = date.format('ddd lll');
+                }
             }
         })
 
