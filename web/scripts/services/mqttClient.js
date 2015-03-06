@@ -15,7 +15,7 @@
             console.log('mqttClient initialized');
             var handlers = {};
             var connectionEstablishedDefer = $q.defer();
-            var client = new Paho.MQTT.Client(location.hostname, appSettings.mqtt.port, 'webSocketClient');
+            var client = new Paho.MQTT.Client(location.hostname, appSettings.mqtt.port, 'webSocketClient_'+moment().format('x'));
 
             function onConnect() {
                 console.log('WS MQTT connection successful.');
