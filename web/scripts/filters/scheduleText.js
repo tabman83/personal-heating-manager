@@ -32,6 +32,7 @@
                         text += moment(input.startDate).format('LL')+' ';
                     }
                     text += moment(input.startDate).format('LT')+'</span>';
+                    break;
                 case 'OFF':
                     text += '<span class="label label-danger">Switch OFF @ ';
                     if(input.recurrence === 'oneTime') {
