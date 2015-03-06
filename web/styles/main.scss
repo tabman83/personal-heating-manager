@@ -51,15 +51,6 @@ div.scrollable {
     -webkit-overflow-scrolling: touch;
 }
 
-.row {
-    display: flex;
-
-    .col-xs-6 {
-        flex-grow: 1;
-        display: flex;
-    }
-}
-
 
 $color_purple: #5133AB;
 $color_red: #AC193D;
@@ -152,8 +143,11 @@ h1, h2, h3, h4, h5, h6 {
     .row {
         margin: 0px;
         padding: 0px;
+        display: flex;
 
         .col-xs-6 {
+            flex-grow: 1;
+            display: flex;
             margin: 3px;
             padding: 0px;
 
