@@ -83,6 +83,9 @@ h1, h2, h3, h4, h5, h6 {
 	background: #fff;
 	padding: 17px;
 	margin-bottom: 30px;
+    &:hover {
+        text-decoration:none;
+    }
     .wi {
         font-size: 0.8em;
     }
