@@ -77,7 +77,7 @@
                 var date = moment(schedule.startDate);
                 if(moment().isBefore(date)) {
                     $scope.nextEventWhat = schedule.type.split('to').slice(0,1).pop();
-                    $scope.nextEventWhen = date.format('ddd lll');
+                    $scope.nextEventWhen = date.calendar();//format('ddd lll');
                 }
             }
         });
