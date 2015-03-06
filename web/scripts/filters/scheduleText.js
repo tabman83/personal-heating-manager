@@ -2,81 +2,67 @@
   * @file        scheduleText.js
   * @author      Antonino Parisi <tabman83@gmail.com>
   * @date        03/03/2015 16:15
-  * @description A filter that a schedule object into human readable text
+  * @description A set of filters that turns a schedule object into human readable text
   */
 
 (function(angular, undefined) {
     'use strict';
 
-    angular.module('PHMApp').filter('scheduleText', ['$sce', function($sce) {
-        var weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    angular.module('PHMApp').filter('scheduleTextWhen', ['$sce', function($sce) {
         return function(input) {
+            var text = '';
+            if(input.repetition.length && input.recurrence === 'weekly') {
+                angular.forEach(input.repetition, function(dayValue) {
+                    text += '<span class="label label-default">'+moment().day(dayValue).format('ddd')+'</span>';
+                });
+            } else {
+                text += 'once';
+            }
+            return $sce.trustAsHtml(text);
+        }
+    }]);
 
+    angular.module('PHMApp').filter('scheduleTextWhat', ['$sce', function($sce) {
+        return function(input) {
             var text = '';
             switch(input.type) {
                 case 'ON':
-                    text += '<span class="label label-success">Switch on ';
+                    text += '<span class="label label-success">Switch ON @ ';
                     if(input.recurrence === 'oneTime') {
-                        text += moment(input.startDate).format('LL');
+                        text += moment(input.startDate).format('LL')+' ';
                     }
-                    text += ' at ';
-                    text += moment(input.startDate).format('LT');
-                    text += '</span>';
-                    break;
+                    text += moment(input.startDate).format('LT')+'</span>';
                 case 'OFF':
-                    text += '<span class="label label-danger">Switch off ';
+                    text += '<span class="label label-danger">Switch OFF @ ';
                     if(input.recurrence === 'oneTime') {
-                        text += moment(input.startDate).format('LL');
+                        text += moment(input.startDate).format('LL') + ' ';
                     }
-                    text += ' at ';
-                    text += moment(input.startDate).format('LT');
-                    text += '</span>';
+                    text += moment(input.startDate).format('LT')+'</span>';
                     break;
                 case 'ONtoOFF':
-                    text = '<span class="label label-success">Switch on ';
+                    text = '<span class="label label-success">Switch ON @ ';
                     if(input.recurrence === 'oneTime') {
-                        text += moment(input.startDate).format('LL');
+                        text += moment(input.startDate).format('LL')+' ';
                     }
-                    text += ' at ';
-                    text += moment(input.startDate).format('LT');
-                    text += '</span> <span class="label label-default">and</span> ';
-                    text += '<span class="label label-danger">off ';
+                    text += moment(input.startDate).format('LT')+'</span>';
+                    text += ' <span class="label label-danger">Switch OFF @ ';
                     if(input.recurrence === 'oneTime') {
-                        text += moment(input.endDate).format('LL');
+                        text += moment(input.endDate).format('LL')+ ' ';
                     }
-                    text += ' at ';
-                    text += moment(input.endDate).format('LT');
-                    text += '</span>';
+                    text += moment(input.endDate).format('LT')+'</span>';
                     break;
                 case 'OFFtoON':
-                    text += '<span class="label label-danger">Switch off ';
+                    text += '<span class="label label-danger">Switch OFF @';
                     if(input.recurrence === 'oneTime') {
-                        text += moment(input.startDate).format('LL');
+                        text += moment(input.startDate).format('LL')+' ';
                     }
-                    text += ' at ';
-                    text += moment(input.startDate).format('LT');
-                    text += '</span> <span class="label label-default">and</span> ';
-                    text += '<span class="label label-success">off ';
+                    text += moment(input.startDate).format('LT')+'</span>';
+                    text += ' <span class="label label-success">Switch OFF @ ';
                     if(input.recurrence === 'oneTime') {
-                        text += moment(input.endDate).format('LL');
+                        text += moment(input.endDate).format('LL')+' ';
                     }
-                    text += ' at ';
-                    text += moment(input.endDate).format('LT');
-                    text += '</span>';
+                    text += moment(input.endDate).format('LT')+ '</span>';
                     break;
-            }
-
-            if(input.repetition.length && input.recurrence === 'weekly') {
-                var dayNames = input.repetition.map(function(dayValue) {
-                    return weekDays[dayValue];
-                });
-                text += ' <span class="label label-default">';
-                if( dayNames.length>1 ) {
-                    text += 'every '+dayNames.slice(0,-1).join(', ')+' and '+dayNames.slice(-1);
-                } else {
-                    text += 'every '+dayNames[0];
-                }
-                text += '</span>';
             }
 
             return $sce.trustAsHtml(text);
