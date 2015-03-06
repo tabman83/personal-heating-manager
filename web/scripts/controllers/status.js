@@ -75,9 +75,15 @@
             if(result.length) {
                 var schedule = result[0];
                 var date = moment(schedule.startDate);
+                var what = schedule.type.split('to').slice(0,1).pop();
                 if(moment().isBefore(date)) {
-                    $scope.nextEventWhat = schedule.type.split('to').slice(0,1).pop();
+                    $scope.nextEventWhat = what;
                     $scope.nextEventWhen = date.calendar();//format('ddd lll');
+                }
+                if(schedule.recurrence === 'weekly') {
+                    $scope.nextEventWhat = what;
+                    // need to fix more this
+                    $scope.nextEventWhen = date.day(schedule.repetition[0]).format('dddd @ LT');
                 }
             }
         });
