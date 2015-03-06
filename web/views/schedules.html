@@ -18,7 +18,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="schedule in schedules" ng-click="go('/schedule/'+schedule._id)" ng-class="{ 'bg-info': isActive(schedule), 'bg-warning': isOutdated(schedule) }">
+                    <tr ng-repeat="schedule in schedules track by schedule._id" ng-click="go('/schedule/'+schedule._id)" ng-class="{ 'bg-info': isActive(schedule), 'bg-warning': isOutdated(schedule) }">
                         <td ng-bind="schedule.name"></td>
                         <td ng-bind-html="schedule | scheduleText"></td>
                     </tr>
