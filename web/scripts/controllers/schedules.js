@@ -24,6 +24,9 @@
         };
 
         $scope.isOutdated = function(schedule) {
+            if(schedule.recurrence === 'weekly') {
+                return false;
+            }
             if(schedule.type === 'ONtoOFF' || schedule.type === 'OFFtoON' ) {
                 return moment().isAfter(schedule.endDate);
             }
