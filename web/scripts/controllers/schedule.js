@@ -191,7 +191,7 @@
                 $location.path('/schedules');
             }, function(error) {
                 $scope.isErrored = true;
-                if(error.code === 11000) {
+                if(error.data.code === 11000) {
                     $scope.errorText = 'A schedule with the same name already exists.';
                 } else {
                     $scope.errorText = error.data.message || error.statusText || 'Cannot contact server';
