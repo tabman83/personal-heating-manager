@@ -21,6 +21,7 @@ var hapiAuthBasic = require('hapi-auth-basic');
 var mqttBroker = require('./mqtt/broker');
 var mqttLogger = require('./mqtt/logger');
 var routes = require('./routes/');
+var scheduler = require('./scheduler/');
 
 function openDbConnection(cb) {
     mongoose.connection.on('error', function(err) {
@@ -105,4 +106,4 @@ if (process.platform === "win32"){
 }
 process.on('SIGINT', gracefulExit).on('SIGTERM', gracefulExit);
 
-async.series([openDbConnection, mqttBroker.start, startHapiServer, mqttLogger.start]);
+async.series([openDbConnection, mqttBroker.start, scheduler.reloadAllSchedules, mqttLogger.start, startHapiServer]);

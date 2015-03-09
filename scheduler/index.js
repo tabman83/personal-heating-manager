@@ -9,9 +9,12 @@ var nodeScheduler = require('node-schedule');
 var moment = require('moment');
 var mqtt    = require('mqtt');
 var nconf = require('nconf');
+var Schedule = require('mongoose').model('Schedule');
 var heaterTopic = nconf.get('mqtt_topic_heater');
 
 module.exports = new function() {
+
+	var self = this;
 
 	var scheduleFunction = function(name, type) {
 		var client = mqtt.connect('mqtt://localhost');
@@ -25,6 +28,25 @@ module.exports = new function() {
 			}
 			client.end();
 		});
+	}
+
+	this.reloadAllSchedules = function() {
+		Schedule
+			.find()
+			.sort({ created: 'desc' })
+			.select({ __v: 0 })
+			.lean()
+			.exec(queryCallback);
+
+		function queryCallback(err, result) {
+			if (err) {
+				console.error(err);
+				return;
+			}
+			result.forEach(function(schedule) {
+				self.create(schedule);
+			});
+		}
 	}
 
 	this.create = function(payload) {
