@@ -6,7 +6,8 @@ var topic = nconf.get('mqtt_topic_temperature');
 var client = mqtt.connect('mqtt://localhost');
 
 var message = new Buffer(4);
-message.writeFloatBE(25.6, 0);
+var num = Math.random()*40;
+message.writeFloatBE(num, 0);
 client.publish(topic, message, function(err) {
 	if(err) {
 		console.log('Error: ',err);

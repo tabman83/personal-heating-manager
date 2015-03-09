@@ -6,7 +6,8 @@ var topic = nconf.get('mqtt_topic_humidity');
 var client = mqtt.connect('mqtt://localhost');
 
 var message = new Buffer(4);
-message.writeFloatBE(78, 0);
+var num = Math.random()*100;
+message.writeFloatBE(num, 0);
 client.publish(topic, message, function(err) {
 	if(err) {
 		console.log('Error: ',err);
