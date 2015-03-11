@@ -24,6 +24,9 @@
         },
         weather: {
             location: 'Swords, Dublin'
+        },
+        charts: {
+            initialYear: 2015
         }
 
     }

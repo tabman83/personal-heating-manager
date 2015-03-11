@@ -8,7 +8,51 @@
 (function(angular, undefined) {
     'use strict';
 
-    angular.module('PHMApp').controller('StatsController', ['$rootScope', '$scope', function($rootScope, $scope) {
+    angular.module('PHMApp').controller('StatsController', ['$rootScope', '$scope', 'appSettings', function($rootScope, $scope, appSettings) {
+
+        $scope.chartTypes = ['Overall', 'Monthly', 'Daily'];
+        $scope.selectedChartType = $scope.chartTypes[0];
+
+        $scope.years = [];
+        for( var i=appSettings.charts.initialYear; i<=moment().year(); i++ ) {
+            var date = moment().year(i);
+            $scope.years.unshift({
+                text: i,
+                begin: date.startOf('year'),
+                end: date.endOf('year')
+            });
+        }
+        $scope.years.unshift({
+            text: 'All',
+            begin: moment().year(appSettings.charts.initialYear).startOf('year'),
+            end: moment().endOf('year')
+        });
+        $scope.selectedYear = $scope.years[0];
+
+        $scope.months = [];
+        for( var i=appSettings.charts.initialYear; i<=moment().year(); i++ ) {
+            for( var j=0; j<12; j++ ) {
+                var date = moment().year(i).month(j);
+                $scope.months.unshift({
+                    year: i,
+                    name: date.format('MMMM'),
+                    begin: date.startOf('month'),
+                    end: date.endOf('month')
+                });
+            }
+            $scope.months.unshift({
+                year: i,
+                name: 'All',
+                begin: date.startOf('year'),
+                end: date.endOf('year')
+            });
+        }
+
+        $scope.selectedMonth = $scope.months[0];
+
+        $scope.apply = function() {
+            
+        }
 
         $scope.myData = [ [ [1, 3], [2, 14.01], [3.5, 3.14] ] ]; /* [{
           "label": "Uniques",
