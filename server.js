@@ -80,7 +80,7 @@ function startHapiServer(cb) {
 
     // Start the server
     server.start(function() {
-        console.log('personal-heater-manager server started @ ' + server.info.uri);
+        console.log('personal-heating-manager server started @ ' + server.info.uri);
         cb(null);
     });
 

@@ -10,7 +10,7 @@ var moment = require('moment');
 var mqtt    = require('mqtt');
 var nconf = require('nconf');
 var Schedule = require('mongoose').model('Schedule');
-var heaterTopic = nconf.get('mqtt_topic_heater');
+var heatingTopic = nconf.get('mqtt_topic_heating');
 
 module.exports = new function() {
 
@@ -20,7 +20,7 @@ module.exports = new function() {
 		var client = mqtt.connect('mqtt://localhost');
 		var message = new Buffer([type == 'ON' ? 1 : 0]);
 		console.log('Running schedule \''+name+'\' for '+type+' @ '+moment().format() );
-		client.publish(heaterTopic, message, function(err) {
+		client.publish(heatingTopic, message, function(err) {
 			if(err) {
 				console.error('Schedule run failed: ', err);
 			} else {
@@ -30,7 +30,7 @@ module.exports = new function() {
 		});
 	}
 
-	this.reloadAllSchedules = function() {
+	this.reloadAllSchedules = function(cb) {
 		Schedule
 			.find()
 			.sort({ created: 'desc' })
@@ -41,11 +41,13 @@ module.exports = new function() {
 		function queryCallback(err, result) {
 			if (err) {
 				console.error(err);
+				cb(err);
 				return;
 			}
 			result.forEach(function(schedule) {
 				self.create(schedule);
 			});
+			cb();
 		}
 	}
 

@@ -1,7 +1,7 @@
 {
-  "name": "personal-heater-manager",
-  "version": "0.1.0",
-  "description": "A personal heater manager system with Arduino and Raspberry Pi.",
+  "name": "personal-heating-manager",
+  "version": "0.2.0",
+  "description": "A personal heating manager system with Arduino and Raspberry Pi.",
   "main": "server.js",
   "scripts": {
     "postinstall": "node_modules/.bin/bower install",
@@ -9,17 +9,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tabman83/personal-heater-manager.git"
+    "url": "https://github.com/tabman83/personal-heating-manager.git"
   },
   "keywords": [
-    "heater"
+    "heating"
   ],
   "author": "Antonino Parisi",
   "license": "GPL",
   "bugs": {
-    "url": "https://github.com/tabman83/personal-heater-manager/issues"
+    "url": "https://github.com/tabman83/personal-heating-manager/issues"
   },
-  "homepage": "https://github.com/tabman83/personal-heater-manager",
+  "homepage": "https://github.com/tabman83/personal-heating-manager",
   "dependencies": {
     "async": "^0.9.0",
     "bcrypt": "^0.8.1",

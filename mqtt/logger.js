@@ -13,7 +13,7 @@ var LogItem             = mongoose.model('LogItem');
 var HeatingStatus       = mongoose.model('HeatingStatus');
 var temperatureTopic    = nconf.get('mqtt_topic_temperature');
 var humidityTopic       = nconf.get('mqtt_topic_humidity');
-var heatingTopic         = nconf.get('mqtt_topic_heating');
+var heatingTopic        = nconf.get('mqtt_topic_heating');
 
 module.exports = new function() {
 
@@ -40,12 +40,13 @@ module.exports = new function() {
 		});
     }
 
-    this.start = function() {
+    this.start = function(cb) {
         client = mqtt.connect('mqtt://localhost');
         client.on('message', onMessage);
         client.subscribe(temperatureTopic);
         client.subscribe(humidityTopic);
         client.subscribe(heatingTopic);
+        cb();
     }
 
 }

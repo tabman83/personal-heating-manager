@@ -32,7 +32,7 @@ HeatingStatusController.prototype = {
 		function queryCallback(err, result) {
 			if (err) {
 				console.error(err);
-				reply( { message: 'Cannot retrieve the heater status.' } ).code(500);
+				reply( { message: 'Cannot retrieve the heating status.' } ).code(500);
 				return;
 			}
 			reply( result );
