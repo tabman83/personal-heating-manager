@@ -18,3 +18,12 @@ $ npm install gulp -g
 $ npm install
 $ npm start
 ```
+## Some notes on Node.js and MongoDB
+
+Following are the resources I used to get up and running with Node.js and MongoDB on top of my RaspberryPi B+.
+
+For Node.js:
+[url="http://c-mobberley.com/wordpress/2013/10/14/raspberry-pi-mongodb-installation-the-working-guide/"]
+
+For MongoDB:
+[url="http://c-mobberley.com/wordpress/2013/10/14/raspberry-pi-mongodb-installation-the-working-guide/"]
