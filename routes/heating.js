@@ -7,7 +7,14 @@ var routes = [{
 	path: '/heating',
 	config: {
 		auth: isDebug ? null : 'simple',
-		handler: heatingStatusController.getHeatingStatus.bind(heatingStatusController)
+		handler: heatingStatusController.getStatus.bind(heatingStatusController)
+	}
+}, {
+	method: 'GET',
+	path: '/heating/stats',
+	config: {
+		auth: isDebug ? null : 'simple',
+		handler: heatingStatusController.getStats.bind(heatingStatusController)
 	}
 }];
 
