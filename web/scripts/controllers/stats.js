@@ -8,9 +8,27 @@
 (function(angular, undefined) {
     'use strict';
 
-    angular.module('PHMApp').controller('StatsController', ['$rootScope', '$scope', 'appSettings', function($rootScope, $scope, appSettings) {
+    angular.module('PHMApp').controller('StatsController', ['$rootScope', '$scope', 'appSettings', 'Stats', function($rootScope, $scope, appSettings, Stats) {
 
-        $scope.chartTypes = ['Overall', 'Monthly', 'Daily'];
+        $scope.chartTypes = [{
+            name: 'Overall',
+            fn: 'overall',
+            format: function() {
+                return 'Total';
+            }
+        }, {
+            name: 'Monthly',
+            fn: 'monthly',
+            format: function(val) {
+                return moment(val).format('MMM YYYY');
+            }
+        }, {
+            name: 'Daily',
+            fn: 'daily',
+            format: function(val) {
+                return moment(val).format('ddd D');
+            }
+        }];
         $scope.selectedChartType = $scope.chartTypes[0];
 
         $scope.years = [];
@@ -51,76 +69,62 @@
         $scope.selectedMonth = $scope.months[0];
 
         $scope.apply = function() {
-            
+            Stats[$scope.selectedChartType.fn](function(result) {
+
+                chart.data = {
+                    cols: [{
+                        id: 'period', label: 'Period', type: 'date' //date
+                    }, {
+                        id: 'heating', label: 'Heating', type: 'number'
+                    }],
+                    rows: []
+                };
+
+
+                angular.forEach(result.durations, function(duration) {
+                    var row = {
+                        c: [{
+                            v: new Date(duration._id),
+                            f: moment(duration._id).format('MMM YYYY') //$scope.selectedChartType.format(duration._id)
+                        }, {
+                            v: duration.value/1000/60/60,
+                            f: moment.duration(duration.value).asHours().toPrecision(3)+' hours'
+                        }]
+                    }
+                    chart.data.rows.push(row);
+
+                });
+
+            });
         }
 
-        $scope.myData = [ [ [1, 3], [2, 14.01], [3.5, 3.14] ] ]; /* [{
-          "label": "Uniques",
-          "color": "#768294",
-          "data": [
-            ["Mar", 70],
-            ["Apr", 85],
-            ["May", 59],
-            ["Jun", 93],
-            ["Jul", 66],
-            ["Aug", 86],
-            ["Sep", 60]
-          ]
-        }, {
-          "label": "Recurrent",
-          "color": "#1f92fe",
-          "data": [
-            ["Mar", 21],
-            ["Apr", 12],
-            ["May", 27],
-            ["Jun", 24],
-            ["Jul", 16],
-            ["Aug", 39],
-            ["Sep", 15]
-          ]
-      }];*/
-        $scope.myChartOptions = {};
-        /*
-            series: {
-                lines: {
-                    show: false
-                },
-                points: {
-                    show: true,
-                    radius: 4
-                },
-                splines: {
-                    show: true,
-                    tension: 0.4,
-                    lineWidth: 1,
-                    fill: 0.5
-                }
-            },
-            grid: {
-                borderColor: '#eee',
-                borderWidth: 1,
-                hoverable: true,
-                backgroundColor: '#fcfcfc'
-            },
-            tooltip: true,
-            tooltipOpts: {
-                content: function (label, x, y) { return x + ' : ' + y; }
-            },
-            xaxis: {
-                tickColor: '#fcfcfc',
-                mode: 'categories'
-            },
-            yaxis: {
-                min: 0,
-                max: 150, // optional: use it for a clear represetation
-                tickColor: '#eee',
-                tickFormatter: function (v) {
-                    return v;
-                }
-            },
-            shadowSize: 0
-        };*/
+        var chart = {};
+        chart.type = 'ColumnChart';
 
+        chart.options = {
+            //'title': 'Sales per month',
+            //'isStacked': 'true',
+            //fill: 20,
+            //displayExactValues: true,
+            vAxis: {
+                title: 'Time (h)',
+                format: '#',
+                gridlines: {
+                    count: -1
+                }
+            },
+            hAxis: {
+                title: 'Date',
+                type: 'category',
+                gridlines: {
+                    count: -1
+                }
+            }
+        };
+
+        chart.formatters = {};
+
+        $scope.chart = chart;
     }]);
 
 })(angular);

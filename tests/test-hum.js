@@ -1,6 +1,6 @@
 var mqtt    = require('mqtt');
 var nconf   = require('nconf');
-nconf.file('./config.json');
+nconf.file('../config.json');
 var topic = nconf.get('mqtt_topic_humidity');
 
 var client = mqtt.connect('mqtt://localhost');

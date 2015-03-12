@@ -1,6 +1,6 @@
 var mqtt    = require('mqtt');
 var nconf   = require('nconf');
-nconf.file('./config.json');
+nconf.file('../config.json');
 var topic = nconf.get('mqtt_topic_temperature');
 
 var client = mqtt.connect('mqtt://localhost');

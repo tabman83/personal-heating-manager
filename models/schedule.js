@@ -27,16 +27,19 @@ var scheduleSchema = new Schema({
     },
     startDate: {
         type: Date,
-        required: true
+        required: true,
+        index: true
     },
     endDate: {
         type: Date,
         required: false,
+        index: true
     },
     repetition: Array,
     created: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        index: true
     }
 });
 

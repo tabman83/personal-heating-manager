@@ -1,5 +1,42 @@
 var HeatingStatus = require('mongoose').model('HeatingStatus');
 
+var noAggregationProjectionDate = 1;
+
+var dailyAggregationProjectionDate = {
+	$subtract: [ '$date', {
+		$add: [ '$ml', { $multiply: [ '$s', 1000 ] }, { $multiply: [ '$m', 60, 1000 ] }, { $multiply: [ '$h', 60, 60, 1000 ] } ]
+	}]
+}
+
+var monthlyAggregationProjectionDate = {
+	$subtract: [ '$date', {
+		$add: [ '$ml', { $multiply: [ '$s', 1000 ] }, { $multiply: [ '$m', 60, 1000 ] }, { $multiply: [ '$h', 60, 60, 1000 ] }, { $multiply: [ { $subtract: ['$d', 1] }, 24, 60, 60, 1000 ] } ]
+	}]
+}
+
+var dailyAggregationProjection = {
+	date: 1,
+	h: { $hour: '$date' },
+	m: { $minute: '$date' },
+	s: { $second: '$date' },
+	ml: { $millisecond: '$date' },
+	timestamp: { $cond: [ '$value', { $multiply: [-1, { $subtract: [ '$date', new Date('1970-01-01') ] }] }, { $multiply: [+1, { $subtract: [ '$date', new Date('1970-01-01') ] }] } ] }
+};
+
+var monthlyAggregationProjection = {
+	date: 1,
+	d: { $dayOfMonth: '$date' },
+	h: { $hour: '$date' },
+	m: { $minute: '$date' },
+	s: { $second: '$date' },
+	ml: { $millisecond: '$date' },
+	timestamp: { $cond: [ '$value', { $multiply: [-1, { $subtract: [ '$date', new Date('1970-01-01') ] }] }, { $multiply: [+1, { $subtract: [ '$date', new Date('1970-01-01') ] }] } ] }
+};
+
+var noAggregationProjection = {
+	timestamp: { $cond: [ '$value', { $multiply: [-1, { $subtract: [ '$date', new Date('1970-01-01') ] }] }, { $multiply: [+1, { $subtract: [ '$date', new Date('1970-01-01') ] }] } ] }
+};
+
 function HeatingStatusController() { }
 
 HeatingStatusController.prototype = {
@@ -45,22 +82,19 @@ HeatingStatusController.prototype = {
 		var begin = request.query.begin ? new Date(request.query.begin) : new Date('2000-01-01');
 		var end = request.query.end ? new Date(request.query.begin) : new Date('2100-01-01');
 
-		var groupId;
+		var projection, projectionDate;
 		switch( aggregation ) {
 			case 'monthly':
-				groupId = {
-					year: '$year',
-					month: '$month'
-				}
+				projection = monthlyAggregationProjection;
+				projectionDate = monthlyAggregationProjectionDate;
 				break;
 			case 'daily':
-				groupId = {
-					year: '$year',
-					dayOfYear: '$dayOfYear'
-				}
+				projection = dailyAggregationProjection;
+				projectionDate = dailyAggregationProjectionDate;
 				break;
 			default:
-				groupId = null;
+				projection = noAggregationProjection;
+				projectionDate = noAggregationProjectionDate;
 				aggregation = 'none';
 		}
 
@@ -73,17 +107,17 @@ HeatingStatusController.prototype = {
 				}
 			}
 		}, {
-			$project: {
-        		date: 1,
-				year: { $year: '$date' },
-        		month: { $month: '$date' },
-				dayOfYear: { $dayOfYear: '$date' },
-        		timestamp: { $cond: [ '$value', { $multiply: [-1, { $subtract: [ '$date', new Date('1970-01-01') ] }] }, { $multiply: [+1, { $subtract: [ '$date', new Date('1970-01-01') ] }] } ] }
-    		}
+			$project: projection
+		}, {
+    		$project: {
+        		value: 1,
+				timestamp: 1,
+        		date : projectionDate
+			}
 		}, {
     		$group: {
-				_id: groupId,
-				duration: { $sum: '$timestamp' }
+				_id: aggregation === 'none' ? null : '$date',
+				value: { $sum: '$timestamp' }
 			}
 		}], queryCallback)
 

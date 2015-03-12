@@ -13,7 +13,8 @@ var heatingStatusSchema = new Schema({
     value: Boolean,
 	date: {
 		type: Date,
-		default: Date.now
+		default: Date.now,
+        index: true
 	},
 });
 
@@ -22,13 +23,17 @@ heatingStatusSchema.pre('save', function (next) {
     var actualStatusValue = this.value;
 
     mongoose.model('HeatingStatus').find().sort({ date: 'desc' }).limit(1).exec(function(err,lastHeatingStatus) {
+        if(!lastHeatingStatus.length) {
+            next(null);
+            return;
+        }
         var lastStatusValue = lastHeatingStatus.pop().value;
         if(actualStatusValue === lastStatusValue) {
             var err = new Error('Duplicate last value for heating status.');
             next(err);
-        } else {
-            next(null);
+            return;
         }
+        next(null);
     });
 });
 
