@@ -80,7 +80,7 @@ HeatingStatusController.prototype = {
 
 		var aggregation = request.query.aggregation;
 		var begin = request.query.begin ? new Date(request.query.begin) : new Date('2000-01-01');
-		var end = request.query.end ? new Date(request.query.begin) : new Date('2100-01-01');
+		var end = request.query.end ? new Date(request.query.end) : new Date('2100-01-01');
 
 		var projection, projectionDate;
 		switch( aggregation ) {
@@ -118,6 +118,10 @@ HeatingStatusController.prototype = {
     		$group: {
 				_id: aggregation === 'none' ? null : '$date',
 				value: { $sum: '$timestamp' }
+			}
+		}, {
+			$sort: {
+				_id: 1
 			}
 		}], queryCallback)
 

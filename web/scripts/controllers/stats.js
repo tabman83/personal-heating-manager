@@ -13,21 +13,15 @@
         $scope.chartTypes = [{
             name: 'Overall',
             fn: 'overall',
-            format: function() {
-                return 'Total';
-            }
+            format: '[Total until ] LLLL'
         }, {
             name: 'Monthly',
             fn: 'monthly',
-            format: function(val) {
-                return moment(val).format('MMM YYYY');
-            }
+            format: 'MMM YYYY'
         }, {
             name: 'Daily',
             fn: 'daily',
-            format: function(val) {
-                return moment(val).format('ddd D');
-            }
+            format: 'ddd D'
         }];
         $scope.selectedChartType = $scope.chartTypes[0];
 
@@ -69,7 +63,12 @@
         $scope.selectedMonth = $scope.months[0];
 
         $scope.apply = function() {
-            Stats[$scope.selectedChartType.fn](function(result) {
+            Stats[$scope.selectedChartType.fn]({
+                //begin: '2015-03-02',
+                //end: '2015-03-11'
+            },function(result) {
+
+
 
                 chart.data = {
                     cols: [{
@@ -82,13 +81,14 @@
 
 
                 angular.forEach(result.durations, function(duration) {
+                    var time = duration._id || new Date().getTime();
                     var row = {
                         c: [{
-                            v: new Date(duration._id),
-                            f: moment(duration._id).format('MMM YYYY') //$scope.selectedChartType.format(duration._id)
+                            v: new Date(time),
+                            f: moment(time).format($scope.selectedChartType.format) //$scope.selectedChartType.format(duration._id)
                         }, {
                             v: duration.value/1000/60/60,
-                            f: moment.duration(duration.value).asHours().toPrecision(3)+' hours'
+                            f: formatDuration(duration.value)
                         }]
                     }
                     chart.data.rows.push(row);
@@ -107,7 +107,7 @@
             //fill: 20,
             //displayExactValues: true,
             vAxis: {
-                title: 'Time (h)',
+                title: 'Time (hours)',
                 format: '#',
                 gridlines: {
                     count: -1
@@ -125,6 +125,26 @@
         chart.formatters = {};
 
         $scope.chart = chart;
+
+        function formatDuration(value) {
+            var d = moment.duration(value);
+            var h = d.hours();
+            var m = d.minutes();
+            var result = [];
+            if( h === 1) {
+                result.push('1 hour');
+            }
+            if( h > 1) {
+                result.push(h + ' hours');
+            }
+            if( m === 1) {
+                result.push('1 minute');
+            }
+            if( m > 1) {
+                result.push(m + ' minutes');
+            }
+            return result.join(' ');
+        }
     }]);
 
 })(angular);

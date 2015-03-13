@@ -100,12 +100,12 @@ function main() {
         //console.log('STOP: ',m.format());
 
 		var a = getRandomInt(16,22);
-		m.hours(a).minutes(getRandomInt(0,59));
+		m.hours(a).minutes(getRandomInt(0,58));
         addOn(m);
         //console.log('START: ',m.format());
 		var b = getRandomInt(a,Math.min(a+1,23));
 		if(a===b) {
-			m.add(getRandomInt(0,59), 'minutes');
+			m.minutes(getRandomInt(m.minutes()+1,59));
 		} else {
 			m.hours(b).minutes(getRandomInt(0,59));
 		}
@@ -115,12 +115,12 @@ function main() {
 
 		if( Math.random() > 0.85 && b < 19 ) {
 			var a = getRandomInt(b+1,23)
-			m.hours(a).minutes(getRandomInt(0,59));
+			m.hours(a).minutes(getRandomInt(0,58));
             addOn(m);
             //console.log('START: ',m.format());
 			var b = getRandomInt(a,23);
 			if(a===b) {
-				m.add(getRandomInt(0,59), 'minutes');
+				m.minutes(getRandomInt(m.minutes()+1,59));
 			} else {
 				m.hours(b).minutes(getRandomInt(0,59));
 			}
