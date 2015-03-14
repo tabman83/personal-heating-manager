@@ -82,63 +82,60 @@ HeatingStatusController.prototype = {
 		var begin = request.query.begin ? new Date(request.query.begin) : new Date('2000-01-01');
 		var end = request.query.end ? new Date(request.query.end) : new Date('2100-01-01');
 
-		Heating.aggregate([{
+		var stageMatch = {
 			$match: {
-				date: {
+				switchedOn: {
 					$gte: begin,
 					$lte: end
 				}
 			}
-		}, {
+		};
+		var stageProject = {
 			$project: {
-				date: 1,
-				d: { $dayOfMonth: '$date' },
-				h: { $hour: '$date' },
-				m: { $minute: '$date' },
-				s: { $second: '$date' },
-				ml: { $millisecond: '$date' },
-				timestamp: { $cond: [ '$value', { $multiply: [-1, { $subtract: [ '$date', new Date('1970-01-01') ] }] }, { $multiply: [+1, { $subtract: [ '$date', new Date('1970-01-01') ] }] } ] }
+		        switchedOn: 1,
+		        switchedOff: 1,
+		        duration: 1,
+		        dayOfYear: { $dayOfYear: '$switchedOn' },
+		        month: { $month: '$switchedOn' },
+		        year: { $year: '$switchedOn' },
 			}
-		}, {
-    		$project: {
-        		value: 1,
-				timestamp: 1,
-        		day : {
-					$subtract: [ '$date', {
-						$add: [ '$ml', { $multiply: [ '$s', 1000 ] }, { $multiply: [ '$m', 60, 1000 ] }, { $multiply: [ '$h', 60, 60, 1000 ] } ]
-					}]
-				},
-				month : {
-					$subtract: [ '$date', {
-						$add: [ '$ml', { $multiply: [ '$s', 1000 ] }, { $multiply: [ '$m', 60, 1000 ] }, { $multiply: [ '$h', 60, 60, 1000 ] }, { $multiply: [ { $subtract: ['$d', 1] }, 24, 60, 60, 1000 ] } ]
-					}]
-				}
-			}
-		}, {
+	    };
+		var stageGrouping = {
 			$group : {
-        		_id : {
-            		day: '$day',
-					month: '$month',
-            		date: '$date',
-            		timestamp: '$timestamp',
-            		value: '$value'
-        		}
-    		}
-		}, {
+		        _id : {
+		            dayOfYear: '$dayOfYear',
+		            month: '$month',
+		            year: '$year',
+		            duration: '$duration',
+		            switchedOn: '$switchedOn',
+		            switchedOff: '$switchedOff'
+		        }
+			}
+		}
+		var stagePush = {
 		    $group : {
-		        _id :  '$_id.'+aggregation,
+		        _id :  {
+		            dayOfYear: '$_id.dayOfYear',
+		            year: '$_id.year'
+		        },
 		        dates: {
 		            $push: {
-		                date:'$_id.date',
-		                value:'$_id.value',
-		                timestamp:'$_id.timestamp'
+		                switchedOff:'$_id.switchedOff',
+		                switchedOn:'$_id.switchedOn',
+		                duration:'$_id.duration'
 		            }
 		        },
-		        duration: { $sum : '$_id.timestamp' }
-			}
-	    }, {
-			$sort: { _id: -1 }
-		}], queryCallback)
+		        duration: { $sum : '$_id.duration' }
+		    }
+		};
+		var stageSort = {
+			$sort: {
+		        '_id.year': -1,
+		        '_id.dayOfYear': -1
+		    }
+		};
+
+		Heating.aggregate([stageMatch, stageProject, stageGrouping, stagePush, stageSort], queryCallback);
 
 		function queryCallback(err, result) {
 			if (err) {
