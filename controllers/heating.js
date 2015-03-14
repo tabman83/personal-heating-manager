@@ -1,4 +1,4 @@
-var HeatingStatus = require('mongoose').model('HeatingStatus');
+var Heating = require('mongoose').model('Heating');
 
 var noAggregationProjectionDate = 1;
 
@@ -42,7 +42,7 @@ function HeatingStatusController() { }
 HeatingStatusController.prototype = {
 
 	insertStatus: function (request, reply) {
-		new HeatingStatus(request.payload).save(function (err) {
+		new Heating(request.payload).save(function (err) {
 			if (err) {
 				console.error(err);
 				reply( { message: 'Cannot save heating status.' } ).code(500);
@@ -59,7 +59,7 @@ HeatingStatusController.prototype = {
 			limit: -1;
 		}
 
-		HeatingStatus
+		Heating
             .find()
             .sort({ date: 'desc' })
             .select({__v: 0 })
@@ -82,24 +82,7 @@ HeatingStatusController.prototype = {
 		var begin = request.query.begin ? new Date(request.query.begin) : new Date('2000-01-01');
 		var end = request.query.end ? new Date(request.query.end) : new Date('2100-01-01');
 
-		var projection, projectionDate;
-		switch( aggregation ) {
-			case 'monthly':
-				projection = monthlyAggregationProjection;
-				projectionDate = monthlyAggregationProjectionDate;
-				break;
-			case 'daily':
-				projection = dailyAggregationProjection;
-				projectionDate = dailyAggregationProjectionDate;
-				break;
-			default:
-				projection = noAggregationProjection;
-				projectionDate = noAggregationProjectionDate;
-				aggregation = 'none';
-		}
-
-
-		HeatingStatus.aggregate([{
+		Heating.aggregate([{
 			$match: {
 				date: {
 					$gte: begin,
@@ -107,22 +90,54 @@ HeatingStatusController.prototype = {
 				}
 			}
 		}, {
-			$project: projection
+			$project: {
+				date: 1,
+				d: { $dayOfMonth: '$date' },
+				h: { $hour: '$date' },
+				m: { $minute: '$date' },
+				s: { $second: '$date' },
+				ml: { $millisecond: '$date' },
+				timestamp: { $cond: [ '$value', { $multiply: [-1, { $subtract: [ '$date', new Date('1970-01-01') ] }] }, { $multiply: [+1, { $subtract: [ '$date', new Date('1970-01-01') ] }] } ] }
+			}
 		}, {
     		$project: {
         		value: 1,
 				timestamp: 1,
-        		date : projectionDate
+        		day : {
+					$subtract: [ '$date', {
+						$add: [ '$ml', { $multiply: [ '$s', 1000 ] }, { $multiply: [ '$m', 60, 1000 ] }, { $multiply: [ '$h', 60, 60, 1000 ] } ]
+					}]
+				},
+				month : {
+					$subtract: [ '$date', {
+						$add: [ '$ml', { $multiply: [ '$s', 1000 ] }, { $multiply: [ '$m', 60, 1000 ] }, { $multiply: [ '$h', 60, 60, 1000 ] }, { $multiply: [ { $subtract: ['$d', 1] }, 24, 60, 60, 1000 ] } ]
+					}]
+				}
 			}
 		}, {
-    		$group: {
-				_id: aggregation === 'none' ? null : '$date',
-				value: { $sum: '$timestamp' }
-			}
+			$group : {
+        		_id : {
+            		day: '$day',
+					month: '$month',
+            		date: '$date',
+            		timestamp: '$timestamp',
+            		value: '$value'
+        		}
+    		}
 		}, {
-			$sort: {
-				_id: 1
+		    $group : {
+		        _id :  '$_id.'+aggregation,
+		        dates: {
+		            $push: {
+		                date:'$_id.date',
+		                value:'$_id.value',
+		                timestamp:'$_id.timestamp'
+		            }
+		        },
+		        duration: { $sum : '$_id.timestamp' }
 			}
+	    }, {
+			$sort: { _id: -1 }
 		}], queryCallback)
 
 		function queryCallback(err, result) {

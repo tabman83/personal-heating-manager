@@ -8,4 +8,4 @@ description:    index for mongoose models
 
 require('./schedule');
 require('./logItem');
-require('./heatingStatus');
+require('./heating');

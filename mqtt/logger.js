@@ -10,7 +10,7 @@ var mqtt                = require('mqtt');
 var nconf               = require('nconf');
 var mongoose            = require('mongoose');
 var LogItem             = mongoose.model('LogItem');
-var HeatingStatus       = mongoose.model('HeatingStatus');
+var Heating             = mongoose.model('Heating');
 var temperatureTopic    = nconf.get('mqtt_topic_temperature');
 var humidityTopic       = nconf.get('mqtt_topic_humidity');
 var heatingTopic        = nconf.get('mqtt_topic_heating');
@@ -22,22 +22,28 @@ module.exports = new function() {
     var onMessage = function(topic, message) {
         console.log('Received from '+topic);
         console.log(message);
-        var item = null;
-        switch(topic) {
-            case heatingTopic :
-                item = new HeatingStatus();
-                item.value = Boolean(message[0]);
-                break;
-            default :
-                item = new LogItem();
-                item.topic = topic;
-                item.value = message.readFloatBE(0);
-        }
-        item.save(function (err) {
+
+        function cb(err) {
 			if (err) {
 				console.error(err);
 			}
-		});
+		}
+
+        switch(topic) {
+            case heatingTopic :
+                var value = Boolean(message[0]);
+                if(value) {
+                    Heating.switchOn(cb);
+                } else {
+                    Heating.switchOff(cb);
+                }
+                break;
+            default :
+                new LogItem({
+                    topic: topic,
+                    value: message.readFloatBE(0)
+                }).save(cb);
+        }
     }
 
     this.start = function(cb) {
