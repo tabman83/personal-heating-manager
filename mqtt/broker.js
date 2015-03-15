@@ -17,8 +17,8 @@ module.exports = new function() {
         var pubsubsettings = {
             //using ascoltatore
             type: 'mongo',
-            url: 'mongodb://localhost:27017/mqtt',
-            pubsubCollection: 'ascoltatori',
+            url: nconf.get('db_host') || 'mongodb://localhost:27017/mqtt',
+            pubsubCollection: 'mqtt',
             mongo: {}
         };
 
