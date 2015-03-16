@@ -1,54 +1,26 @@
 <div class="row" ng-controller="StatsController">
     <div class="col-lg-12">
-        <h4>Statistics</h4>
-
-        <!--<form class="form-horizontal" name="chartForm" ng-submit="save()">
-            <div class="form-group">
-                <label for="inputType" class="col-sm-2 control-label">Type</label>
-                <div class="col-sm-10">
-                    <select ng-model="selectedChartType" class="form-control" id="inputType" ng-options="chartType for chartType in chartTypes"></select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputYear" class="col-sm-2 control-label">Year</label>
-                <div class="col-sm-10">
-                    <select ng-model="selectedYear" class="form-control" id="inputYear" ng-options="year.text for year in years"></select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputMonth" class="col-sm-2 control-label">Month</label>
-                <div class="col-sm-10">
-                    <select ng-model="selectedMonth" class="form-control" id="inputMonth" ng-options="month.name group by month.year for month in months"></select>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-primary">Apply <i class="fa fa-arrow-right"></i></button>
-                </div>
-            </div>
-        </form>-->
-
-
 
         <form class="form-inline" name="chartForm" ng-submit="apply()">
             <div class="form-group">
                 <label for="inputType" class="control-label">Type:</label>
                 <select ng-model="selectedChartType" class="form-control" id="inputType" ng-options="chartType.name for chartType in chartTypes"></select>
             </div>
-            <div class="form-group" ng-if="selectedChartType=='Monthly'">
+            <div class="form-group" ng-if="selectedChartType.name==='Monthly'">
                 <label for="inputYear" class="control-label">Year:</label>
                 <select ng-model="selectedYear" class="form-control" id="inputYear" ng-options="year.text for year in years"></select>
             </div>
-            <div class="form-group" ng-if="selectedChartType=='Daily'">
+            <div class="form-group" ng-if="selectedChartType.name==='Daily'">
                 <label for="inputMonth" class="control-label">Month:</label>
                 <select ng-model="selectedMonth" class="form-control" id="inputMonth" ng-options="month.name group by month.year for month in months"></select>
             </div>
 
-            <button type="submit" class="pull-right btn btn-primary">Apply <i class="fa fa-arrow-right"></i></button>
         </form>
 
-        <div google-chart chart="chart" style="height:350px"></div>
+        <div google-chart chart="chart" select="onSelectRowFunction(selectedItem)" style="height:350px"></div>
+
+        <h4 ng-show="showBreakdown">Daily breakdown</h4>
+        <div ng-show="showBreakdown" google-chart chart="timeline" style="height:{{timelineHeight}}px"></div>
 
     </div>
 </div>

@@ -16,12 +16,17 @@
             },
             daily: {
                 params: {
-                    aggregation: 'daily'
+                    aggregation: 'day'
+                }
+            },
+            weekly: {
+                params: {
+                    aggregation: 'week'
                 }
             },
             monthly: {
                 params: {
-                    aggregation: 'monthly'
+                    aggregation: 'month'
                 }
             },
         });

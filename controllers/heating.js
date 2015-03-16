@@ -96,7 +96,7 @@ HeatingStatusController.prototype = {
 			}
 		}
 		var stageMidSort = {
-			$sort: { 'switchedOn': -1 }
+			$sort: { '_id.switchedOn': 1 }
 		}
 		var stagePush = {
 		    $group : {
@@ -112,7 +112,7 @@ HeatingStatusController.prototype = {
 		        duration: { $sum : '$_id.duration' }
 		    }
 		};
-		var stageSort = { $sort: { 'date': -1 } };
+		var stageSort = { $sort: { 'date': 1 } };
 
 		Heating.aggregate([stageMatch, stageProject, stageGrouping, stageMidSort, stagePush, stageSort], queryCallback);
 

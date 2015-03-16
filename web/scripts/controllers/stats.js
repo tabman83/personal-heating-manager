@@ -10,6 +10,10 @@
 
     angular.module('PHMApp').controller('StatsController', ['$rootScope', '$scope', 'appSettings', 'Stats', function($rootScope, $scope, appSettings, Stats) {
 
+        $scope.showBreakdown = false;
+
+        var serverData = {};
+
         $scope.chartTypes = [{
             name: 'Overall',
             fn: 'overall',
@@ -18,6 +22,10 @@
             name: 'Monthly',
             fn: 'monthly',
             format: 'MMM YYYY'
+        }, {
+            name: 'Weekly',
+            fn: 'weekly',
+            format: 'wo YYYY'
         }, {
             name: 'Daily',
             fn: 'daily',
@@ -62,13 +70,14 @@
 
         $scope.selectedMonth = $scope.months[0];
 
-        $scope.apply = function() {
+        $scope.$watchGroup(['selectedChartType', 'selectedYear', 'selectedMonth'], function() {
+            $scope.showBreakdown = false;
             Stats[$scope.selectedChartType.fn]({
                 //begin: '2015-03-02',
                 //end: '2015-03-11'
             },function(result) {
 
-
+                serverData = result.durations;
 
                 chart.data = {
                     cols: [{
@@ -79,16 +88,16 @@
                     rows: []
                 };
 
+                angular.forEach(result.durations, function(el) {
 
-                angular.forEach(result.durations, function(duration) {
-                    var time = duration._id || new Date().getTime();
+                    var mTime = moment(el.date);
                     var row = {
                         c: [{
-                            v: new Date(time),
-                            f: moment(time).format($scope.selectedChartType.format) //$scope.selectedChartType.format(duration._id)
+                            v: mTime.toDate(),
+                            f: mTime.format($scope.selectedChartType.format) //$scope.selectedChartType.format(duration._id)
                         }, {
-                            v: duration.value/1000/60/60,
-                            f: formatDuration(duration.value)
+                            v: el.duration/1000/60/60,
+                            f: formatDuration(el.duration)
                         }]
                     }
                     chart.data.rows.push(row);
@@ -96,16 +105,13 @@
                 });
 
             });
-        }
+        });
 
         var chart = {};
         chart.type = 'ColumnChart';
 
         chart.options = {
-            //'title': 'Sales per month',
-            //'isStacked': 'true',
-            //fill: 20,
-            //displayExactValues: true,
+            title: 'Aggregation',
             vAxis: {
                 title: 'Time (hours)',
                 format: '#',
@@ -125,6 +131,64 @@
         chart.formatters = {};
 
         $scope.chart = chart;
+
+
+        var timeline = {};
+        timeline.type = 'Timeline';
+
+        timeline.options = {
+            title: 'Timeline',
+            vAxis: {
+                title: 'Time (hours)',
+                format: '#'
+            },
+            hAxis: {
+                title: 'Date'
+            }
+        };
+
+        timeline.formatters = {};
+
+        $scope.timeline = timeline;
+
+        $scope.onSelectRowFunction = function(selectedItem){
+            var dates = serverData[selectedItem.row].dates;
+
+            var m1 = moment(dates[0].switchedOn);
+            var m2 = moment(dates[dates.length-1].switchedOn);
+            $scope.timelineHeight = 41*(m2.diff(m1,'days'))+120;
+
+            timeline.data = {
+                cols: [{
+                    id: 'Date', type: 'string' //date
+                }, {
+                    id: 'Start', type: 'date'
+                }, {
+                    id: 'End', type: 'date'
+                }],
+                rows: []
+            };
+
+            angular.forEach( dates, function( aDate ) {
+
+                var start = moment(aDate.switchedOn).dayOfYear(1).year(2000).toDate();
+                var end = moment(aDate.switchedOff).dayOfYear(1).year(2000).toDate();
+                //console.log(start +" - "+end);
+                var row = {
+                    c: [{
+                        v: moment(aDate.switchedOn).format('ddd ll')
+                    }, {
+                        v: start
+                    }, {
+                        v: end
+                    }]
+                };
+
+                timeline.data.rows.push(row);
+
+            });
+            $scope.showBreakdown = true;
+        }
 
         function formatDuration(value) {
             var d = moment.duration(value);
