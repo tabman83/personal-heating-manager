@@ -31,7 +31,7 @@ function openDbConnection(cb) {
         }
     }
     try {
-        mongoose.connect(nconf.get('db_host') || 'mongodb://localhost/PHM', options);
+        mongoose.connect(nconf.get('db') || 'mongodb://localhost/PHM', options);
     } catch (err) {
         console.log('Could not connect to database.', err);
         cb(err);

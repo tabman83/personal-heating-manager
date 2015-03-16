@@ -45,7 +45,7 @@ function openDbConnection(cb) {
         }
     }
     try {
-        mongoose.connect(nconf.get('db_host') || 'mongodb://localhost/PHM', options);
+        mongoose.connect(nconf.get('db') || 'mongodb://localhost/PHM', options);
     } catch (err) {
         console.log('Could not connect to database.', err);
         cb(err);
@@ -57,7 +57,8 @@ function startHapiServer(cb) {
     // Create a server with a host and port
     var server = new Hapi.Server();
     server.connection({
-        port: nconf.get('server_port') || 3000,
+        host: nconf.get('web_server_address') || '0.0.0.0',
+        port: nconf.get('web_server_port') || 3000,
         routes: { cors: true }
     });
 
@@ -77,9 +78,12 @@ function startHapiServer(cb) {
     });
 
     routes(server);
-
     // Start the server
-    server.start(function() {
+    server.start(function(err) {
+        if(err) {
+            cb(err);
+            return;
+        }
         console.log('personal-heating-manager server started @ ' + server.info.uri);
         cb(null);
     });
@@ -99,11 +103,16 @@ if (process.platform === "win32"){
         output: process.stdout
     });
 
-    rl.on ("SIGINT", function (){
+    rl.on("SIGINT", function (){
         process.emit ("SIGINT");
     });
 
 }
 process.on('SIGINT', gracefulExit).on('SIGTERM', gracefulExit);
 
-async.series([openDbConnection, mqttBroker.start, scheduler.reloadAllSchedules, mqttLogger.start, startHapiServer]);
+async.series([openDbConnection, mqttBroker.start, scheduler.reloadAllSchedules, mqttLogger.start, startHapiServer], function(err, results){
+    if(err) {
+        console.error(err);
+        gracefulExit();
+    }
+});
