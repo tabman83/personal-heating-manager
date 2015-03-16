@@ -8,7 +8,7 @@
 (function(angular, undefined) {
     'use strict';
 
-    angular.module('PHMApp').controller('StatusController', ['$rootScope', '$scope', '$timeout', 'mqttClient', 'yahooWeatherClient', 'appSettings', 'HeatingStatus', 'Temperature', 'Humidity', 'Schedule', function($rootScope, $scope, $timeout, mqttClient, yahooWeatherClient, appSettings, HeatingStatus, Temperature, Humidity, Schedule) {
+    angular.module('PHMApp').controller('StatusController', ['$rootScope', '$scope', '$timeout', 'mqttClient', 'yahooWeatherClient', 'appSettings', 'Heating', 'Temperature', 'Humidity', 'Schedule', function($rootScope, $scope, $timeout, mqttClient, yahooWeatherClient, appSettings, Heating, Temperature, Humidity, Schedule) {
 
         $scope.insideTemp = '?';
         $scope.outsideTemp = '?';
@@ -88,11 +88,11 @@
             }
         });
 
-        HeatingStatus.query({limit: 1}, function(result) {
-            if( result.length ) {
-                var status = result.pop();
-                $scope.heatingStatus = status.value;
-                $scope.heatingStatusWhen = moment(status.date).fromNow();
+        Heating.status( function(result) {
+            if( result ) {
+                console.log(result);
+                $scope.heatingStatus = result.status;
+                $scope.heatingStatusWhen = moment(result.date).fromNow();
             }
         });
 

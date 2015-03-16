@@ -1,6 +1,6 @@
 {
   "name": "personal-heating-manager",
-  "version": "0.2.0",
+  "version": "0.5.1",
   "description": "A personal heating manager system with Arduino and Raspberry Pi.",
   "main": "server.js",
   "scripts": {

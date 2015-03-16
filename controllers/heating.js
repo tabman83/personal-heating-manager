@@ -17,17 +17,7 @@ HeatingStatusController.prototype = {
 
 	getStatus: function (request, reply) {
 
-        var limit = parseInt(request.query.limit, 10);
-		if( typeof(limit) !== 'number' || isNaN(limit) ) {
-			limit: -1;
-		}
-
-		Heating
-            .find()
-            .sort({ date: 'desc' })
-            .select({__v: 0 })
-            .limit(limit)
-            .exec(queryCallback);
+		Heating.findLast(queryCallback);
 
 		function queryCallback(err, result) {
 			if (err) {
@@ -35,7 +25,13 @@ HeatingStatusController.prototype = {
 				reply( { message: 'Cannot retrieve the heating status.' } ).code(500);
 				return;
 			}
-			reply( result );
+
+			var response = {
+				status: result.isSwitchedOn,
+				date: result.isSwitchedOn ? result.switchedOn : result.switchedOff
+			}
+
+			reply( response );
 		}
     },
 
