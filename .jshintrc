@@ -20,6 +20,7 @@
         "angular": false,
         "moment": false,
         "Paho": false,
-        "_": false
+        "_": false,
+        "Modernizr": false
     }
 }

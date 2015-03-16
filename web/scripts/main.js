@@ -25,7 +25,7 @@
                 redirectTo: '/status'
             });
 
-            $.fn.datepicker.defaults.format = "yyyy-mm-dd";
+            $.fn.datepicker.defaults.format = 'yyyy-mm-dd';
 
             //$locationProvider.html5Mode(true);
         }]).run(['$rootScope', '$window', '$document', function($rootScope, $window, $document) {

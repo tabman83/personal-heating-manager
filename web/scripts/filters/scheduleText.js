@@ -19,7 +19,7 @@
                 text += 'once';
             }
             return $sce.trustAsHtml(text);
-        }
+        };
     }]);
 
     angular.module('PHMApp').filter('scheduleTextWhat', ['$sce', function($sce) {

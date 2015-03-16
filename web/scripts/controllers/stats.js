@@ -50,21 +50,22 @@
         $scope.selectedYear = $scope.years[0];
 
         $scope.months = [];
-        for( var i=appSettings.charts.initialYear; i<=moment().year(); i++ ) {
+        for( var im=appSettings.charts.initialYear; im<=moment().year(); im++ ) {
+            var datem = null;
             for( var j=0; j<12; j++ ) {
-                var date = moment().year(i).month(j);
+                datem = moment().year(im).month(j);
                 $scope.months.unshift({
-                    year: i,
-                    name: date.format('MMMM'),
-                    begin: date.startOf('month'),
-                    end: date.endOf('month')
+                    year: im,
+                    name: datem.format('MMMM'),
+                    begin: datem.startOf('month'),
+                    end: datem.endOf('month')
                 });
             }
             $scope.months.unshift({
-                year: i,
+                year: im,
                 name: 'All',
-                begin: date.startOf('year'),
-                end: date.endOf('year')
+                begin: datem.startOf('year'),
+                end: datem.endOf('year')
             });
         }
 
@@ -99,7 +100,7 @@
                             v: el.duration/1000/60/60,
                             f: formatDuration(el.duration)
                         }]
-                    }
+                    };
                     chart.data.rows.push(row);
 
                 });
@@ -188,7 +189,7 @@
 
             });
             $scope.showBreakdown = true;
-        }
+        };
 
         function formatDuration(value) {
             var d = moment.duration(value);
