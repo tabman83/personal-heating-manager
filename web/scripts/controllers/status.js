@@ -90,7 +90,6 @@
 
         Heating.status( function(result) {
             if( result ) {
-                console.log(result);
                 $scope.heatingStatus = result.status;
                 $scope.heatingStatusWhen = moment(result.date).fromNow();
             }
