@@ -1,3 +1,4 @@
+var moment = require('moment');
 var Heating = require('mongoose').model('Heating');
 
 function HeatingStatusController() { }
@@ -26,12 +27,17 @@ HeatingStatusController.prototype = {
 				return;
 			}
 
-			var response = {
-				status: result.isSwitchedOn,
-				date: result.isSwitchedOn ? result.switchedOn : result.switchedOff
+			if(result) {
+				reply({
+					status: result.isSwitchedOn,
+					date: result.isSwitchedOn ? result.switchedOn : result.switchedOff
+				});
+			} else {
+				reply({
+					status: false,
+					date: moment(0).startOf('year').toDate()
+				});
 			}
-
-			reply( response );
 		}
     },
 
