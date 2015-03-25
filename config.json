@@ -2,7 +2,7 @@
     "debug": true,
     "db": "mongodb://localhost/PHM",
     "web_server_address": "0.0.0.0",
-    "web_server_port": 80,
+    "web_server_port": 3000,
     "mqtt_port": 1883,
     "mqtt_ws_port": 3001,
     "mqtt_topic_heating": "PHM/heating",
