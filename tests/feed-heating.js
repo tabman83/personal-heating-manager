@@ -62,25 +62,35 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function switchOn(m) {
-    Heating.switchOn(+m, function(err) {
-        if(err) {
-            console.log(err);
-        }
-    });
-}
-
-function switchOff(m) {
-    Heating.switchOff(+m, function(err) {
-        if(err) {
-            console.log(err);
-        }
-    });
-}
-
 function main() {
 	console.log('Start...\n');
 
+    ////////////////////////////
+    var s = moment('2015-03-01 23:30');
+    Heating.switchOn('auto', s, function(err) {
+        if(err) {
+            console.log("on ",err);
+        }
+    });
+
+    var s = moment('2015-03-01 23:35');
+    Heating.switchOn('manual', s, function(err) {
+        if(err) {
+            console.log("on ",err);
+        }
+    });
+
+
+    var s = moment('2015-03-02 01:10');
+    Heating.switchOff('auto', s, function(err) {
+        if(err) {
+            console.log("off ",err);
+        }
+    });
+
+    //gracefulExit();
+    return;
+    /////////////////////
 
 	var m = moment('2014-01-01');
 
@@ -91,37 +101,37 @@ function main() {
         if(m.days() > 0 && m.days() < 6 ) {
             // weekdays
             m.hours(6).minutes(50).seconds(getRandomInt(0,59));
-            switchOn(m);
+            Heating.switchOn('auto', m);
 
             m.hours(7).minutes(30).seconds(getRandomInt(0,59));
-            switchOff(m);
+            Heating.switchOff('auto', m);
         } else {
             // weekend
             m.hours(10).minutes(30).seconds(getRandomInt(0,59));
-            switchOn(m);
+            Heating.switchOn('auto', m);
 
             m.hours(10).minutes(55).seconds(getRandomInt(0,59));
-            switchOff(m);
+            Heating.switchOff('auto', m);
         }
 
         // random switch on in the afternoon
 
 		var a = getRandomInt(16,22);
 		m.hours(a).minutes(getRandomInt(0,58)).seconds(getRandomInt(0,59));
-        switchOn(m);
+        Heating.switchOn('auto', m);
         //console.log('START: ',m.format());
 		var b = getRandomInt(a,Math.min(a+1,23));
-		if(a===b) {
+		if(a === b) {
 			m.minutes(getRandomInt(m.minutes()+1,59)).seconds(getRandomInt(0,59));
 		} else {
 			m.hours(b).minutes(getRandomInt(0,59)).seconds(getRandomInt(0,59));
 		}
-        switchOff(m);
+        Heating.switchOff('auto', m);
 
 		if( Math.random() > 0.9 && b < 19 ) {
 			var a = getRandomInt(b+1,23)
 			m.hours(a).minutes(getRandomInt(0,58));
-            switchOn(m);
+            Heating.switchOn('auto', m);
             //console.log('START: ',m.format());
 			var b = getRandomInt(a,23);
 			if(a===b) {
@@ -129,7 +139,7 @@ function main() {
 			} else {
 				m.hours(b).minutes(getRandomInt(0,59));
 			}
-            switchOff(m);
+            Heating.switchOff('auto', m);
 		}
 
         m.add(1,'days');
@@ -139,6 +149,7 @@ function main() {
 
 
 	console.log('Stop.\n');
+    gracefulExit();
 }
 
 openDbConnection(main);
