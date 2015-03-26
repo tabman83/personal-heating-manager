@@ -20,7 +20,7 @@ var Bcrypt = require('bcrypt');
 var hapiAuthBasic = require('hapi-auth-basic');
 var mqttBroker = require('./mqtt/broker');
 var mqttLogger = require('./mqtt/logger');
-var gpioManager = require('./gpioManager');
+var gpioManager = require('./gpioManager/');
 var routes = require('./routes/');
 var scheduler = require('./scheduler/');
 
