@@ -14,6 +14,7 @@ var Heating             = mongoose.model('Heating');
 var temperatureTopic    = nconf.get('mqtt_topic_temperature');
 var humidityTopic       = nconf.get('mqtt_topic_humidity');
 var heatingTopic        = nconf.get('mqtt_topic_heating');
+var gpioManager         = require('./gpioManager');
 
 module.exports = new function() {
 
@@ -32,6 +33,7 @@ module.exports = new function() {
         switch(topic) {
             case heatingTopic :
                 var value = Boolean(message[0]);
+                gpioManager.setHeating(+value);
                 if(value) {
                     Heating.switchOn(cb);
                 } else {

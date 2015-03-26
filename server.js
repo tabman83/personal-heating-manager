@@ -20,6 +20,7 @@ var Bcrypt = require('bcrypt');
 var hapiAuthBasic = require('hapi-auth-basic');
 var mqttBroker = require('./mqtt/broker');
 var mqttLogger = require('./mqtt/logger');
+var gpioManager = require('./gpioManager');
 var routes = require('./routes/');
 var scheduler = require('./scheduler/');
 
@@ -91,9 +92,11 @@ function startHapiServer(cb) {
 }
 
 function gracefulExit () {
-    mongoose.connection.close(function () {
-        console.log('Mongoose default connection is disconnected through app termination');
-        process.exit(0);
+    gpioManager.close(function() {
+        mongoose.connection.close(function () {
+            console.log('Mongoose default connection is disconnected through app termination');
+            process.exit(0);
+        });
     });
 }
 
@@ -110,7 +113,7 @@ if (process.platform === "win32"){
 }
 process.on('SIGINT', gracefulExit).on('SIGTERM', gracefulExit);
 
-async.series([openDbConnection, mqttBroker.start, scheduler.reloadAllSchedules, mqttLogger.start, startHapiServer], function(err, results){
+async.series([openDbConnection, mqttBroker.start, scheduler.reloadAllSchedules, mqttLogger.start, gpioManager.start, startHapiServer], function(err, results){
     if(err) {
         console.error(err);
         gracefulExit();
