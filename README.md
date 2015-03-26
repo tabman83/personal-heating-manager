@@ -23,7 +23,7 @@ $ npm start
 Following are the resources I used to get up and running with Node.js and MongoDB on top of my RaspberryPi B+.
 
 For Node.js:
-[url="http://c-mobberley.com/wordpress/2013/10/14/raspberry-pi-mongodb-installation-the-working-guide/"]
+http://node-arm.herokuapp.com/
 
 For MongoDB:
-[url="http://c-mobberley.com/wordpress/2013/10/14/raspberry-pi-mongodb-installation-the-working-guide/"]
+http://c-mobberley.com/wordpress/2013/10/14/raspberry-pi-mongodb-installation-the-working-guide/
