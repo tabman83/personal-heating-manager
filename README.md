@@ -1,4 +1,4 @@
-# personal-heating-manager
+# personal-heating-manager [![Build Status](https://travis-ci.org/tabman83/personal-heating-manager.svg?branch=master)](https://travis-ci.org/tabman83/personal-heating-manager)
 A personal heating manager system with Arduino and Raspberry Pi.
 
 ## Prerequisites
