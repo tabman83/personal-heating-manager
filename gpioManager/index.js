@@ -22,6 +22,7 @@ module.exports = new function() {
 			Gpio = require('onoff').Gpio;
 			heatingActuator = new Gpio(heatingActuatorPin, 'out');
 			heatingActuator.writeSync(0);
+			console.log('GPIOs successfully initialized.')
 		} else {
 			console.error('Could not initialize the GPIOs.');
 		}
