@@ -47,7 +47,7 @@ module.exports = new function() {
 			result.forEach(function(schedule) {
 				self.create(schedule);
 			});
-			cb();
+			cb(null);
 		}
 	}
 
