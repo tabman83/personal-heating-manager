@@ -14,7 +14,7 @@ var Heating             = mongoose.model('Heating');
 var temperatureTopic    = nconf.get('mqtt_topic_temperature');
 var humidityTopic       = nconf.get('mqtt_topic_humidity');
 var heatingTopic        = nconf.get('mqtt_topic_heating');
-var gpioManager         = require('./gpioManager/');
+var gpioManager         = require('../gpioManager/');
 
 module.exports = new function() {
 
