@@ -22,7 +22,7 @@ module.exports = new function() {
 			Gpio = require('onoff').Gpio;
 			heatingActuator = new Gpio(heatingActuatorPin, 'out');
 			heatingActuator.writeSync(0);
-			console.log('GPIOs successfully initialized.')
+			//console.log('GPIOs successfully initialized.')
 		} else {
 			console.error('Could not initialize the GPIOs.');
 		}
@@ -31,14 +31,14 @@ module.exports = new function() {
 
 	this.setHeating = function(val) {
 		if(Gpio) {
-			console.log('Writing to GPIO '+heatingActuatorPin);
+			//console.log('Writing to GPIO '+heatingActuatorPin);
 			heatingActuator.writeSync(val);
 		}
 	}
 
 	this.close = function(cb) {
 		if(Gpio) {
-			console.log('Unexporting GPIO.');
+			//console.log('Unexporting GPIO.');
 			heatingActuator.unexport();
 		}
 		cb(null);

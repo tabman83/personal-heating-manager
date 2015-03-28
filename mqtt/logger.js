@@ -21,8 +21,8 @@ module.exports = new function() {
     var client = null;
 
     var onMessage = function(topic, message) {
-        console.log('Received from '+topic);
-        console.log(message);
+        //console.log('Received from '+topic);
+        //console.log(message);
 
         function cb(err) {
 			if (err) {
@@ -35,9 +35,9 @@ module.exports = new function() {
                 var value = Boolean(message[0]);
                 gpioManager.setHeating(+value);
                 if(value) {
-                    Heating.switchOn(cb);
+                    Heating.switchOn('auto', cb);
                 } else {
-                    Heating.switchOff(cb);
+                    Heating.switchOff('auto', cb);
                 }
                 break;
             default :
