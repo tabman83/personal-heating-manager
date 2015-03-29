@@ -8,7 +8,7 @@
 (function(angular, undefined) {
     'use strict';
 
-    angular.module('PHMApp').controller('StatusController', ['$rootScope', '$scope', '$timeout', 'mqttClient', 'yahooWeatherClient', 'appSettings', 'Heating', 'Temperature', 'Humidity', 'Schedule', function($rootScope, $scope, $timeout, mqttClient, yahooWeatherClient, appSettings, Heating, Temperature, Humidity, Schedule) {
+    angular.module('PHMApp').controller('StatusController', ['$rootScope', '$scope', '$timeout', 'socket', 'yahooWeatherClient', 'appSettings', 'Heating', 'Temperature', 'Humidity', 'Schedule', function($rootScope, $scope, $timeout, socket, yahooWeatherClient, appSettings, Heating, Temperature, Humidity, Schedule) {
 
         $scope.insideTemp = '?';
         $scope.outsideTemp = '?';
@@ -23,7 +23,7 @@
         $scope.heatingStatusWhen = '';
 
         $scope.switchHeating = function() {
-
+            /*
             if( $scope.heatingStatus !== undefined ) {
                 var message = new Uint8Array(1);
                 message[0] = Number(!$scope.heatingStatus);
@@ -32,9 +32,14 @@
                 $timeout(function() {
                     $scope.heatingButtonDisabled = false;
                 }, 2000);
-            }
+            }*/
         };
 
+        socket.on('heating', function(data) {
+            console.log(data);
+        });
+
+        /*
         var heatingHandler = mqttClient.subscribe(appSettings.mqtt.topics.heating, function(buffer) {
             $scope.heatingStatus = Boolean(buffer[0]);
             $scope.heatingStatusWhen = 'now';
@@ -54,7 +59,7 @@
                 dataview.setUint8(i,buffer[i]);
             }
             $scope.insideHumidity = dataview.getFloat32(0);
-        });
+        });*/
 
         yahooWeatherClient.getWeather().then(function(data) {
             $scope.outsideHumidity = data.atmosphere.humidity;
@@ -64,12 +69,12 @@
             $scope.weatherStatus = data.item.condition.text;
         });
 
-
+        /*
         $scope.$on('$destroy', function() {
             mqttClient.unsubscribe(heatingHandler);
             mqttClient.unsubscribe(tempHandler);
             mqttClient.unsubscribe(humidityHandler);
-        });
+        });*/
 
         Schedule.query({limit: 1}, function(result) {
             if(result.length) {

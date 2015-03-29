@@ -9,7 +9,7 @@
     'use strict';
 
     angular
-        .module('PHMApp', ['ngRoute', 'ngResource', 'ngTouch', 'googlechart'])
+        .module('PHMApp', ['ngRoute', 'ngResource', 'ngTouch', 'googlechart', 'btford.socket-io'])
         .config(['$routeProvider', function($routeProvider) {
             $routeProvider.when('/status', {
                 templateUrl: '/views/status.html'
@@ -28,6 +28,9 @@
             $.fn.datepicker.defaults.format = 'yyyy-mm-dd';
 
             //$locationProvider.html5Mode(true);
+            
+        }]).factory('socket', ['socketFactory', function (socketFactory) {
+            return socketFactory();
         }]).run(['$rootScope', '$window', '$document', function($rootScope, $window, $document) {
 
             // Hook success

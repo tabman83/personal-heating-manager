@@ -40,7 +40,7 @@ description:    Heating manager
 		tasks.push( heatingModel.switchOn.bind(heatingModel, reason) );
 
 		tasks.push( function(cb) {
-			this.io.emit('ON');
+			this.io.emit('heating', { value: true } );
 			cb(null);
 		}.bind(this) );
 
@@ -60,7 +60,7 @@ description:    Heating manager
 		tasks.push( heatingModel.switchOff.bind(heatingModel, reason) );
 
 		tasks.push( function(cb) {
-			this.io.emit('OFF');
+			this.io.emit('heating', { value: false } );
 			cb(null);
 		}.bind(this) );
 
