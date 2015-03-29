@@ -6,13 +6,15 @@ date:           03/03/2015 14:52
 description:    schedule controller
 */
 var Schedule = require('mongoose').model('Schedule');
-var scheduler = require('../scheduler/');
 
-function ScheduleController() { }
+function ScheduleController(scheduler) {
+	this.scheduler = scheduler;
+}
 
 ScheduleController.prototype = {
 
 	insertSchedule: function (request, reply) {
+		var that = this;
 		new Schedule(request.payload).save(function (err) {
 			if (err) {
 				console.error(err);
@@ -23,7 +25,7 @@ ScheduleController.prototype = {
 				return;
 			}
 
-			scheduler.create(request.payload);
+			that.scheduler.create(request.payload);
 			reply( { message: 'Success.' } );
 		});
 	},

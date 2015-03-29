@@ -12,10 +12,11 @@ var temperature = require('./temperature');
 var schedule = require('./schedule');
 var website = require('./website');
 
-module.exports = function (server) {
-	heating.routes(server);
-	humidity.routes(server);
-	temperature.routes(server);
-	schedule.routes(server);
-	website.routes(server);
+module.exports = function (nconf, heatingManager, scheduler, server) {
+	var auth = nconf.get('debug') ? null : 'simple';
+	heating.routes(auth, heatingManager, server);
+	humidity.routes(auth, server);
+	temperature.routes(auth, server);
+	schedule.routes(auth, scheduler, server);
+	website.routes(auth, server);
 };

@@ -3,11 +3,6 @@
     "db": "mongodb://localhost/PHM",
     "web_server_address": "0.0.0.0",
     "web_server_port": 3000,
-    "mqtt_port": 1883,
-    "mqtt_ws_port": 3001,
-    "mqtt_topic_heating": "PHM/heating",
-    "mqtt_topic_temperature": "PHM/temperature",
-    "mqtt_topic_humidity": "PHM/humidity",
     "heating_actuator_pin": 14,
     "users" : {
         "tabman83": "$2a$08$0jnKJs7L66LGSdM2u8N.6OmqxUZpzQ8.br/wtpIeWDL5iO1wdOWx.",

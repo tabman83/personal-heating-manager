@@ -13,6 +13,19 @@
         return $resource(baseUrl+'/heating', {}, {
             status: {
                 method: 'GET'
+            }, {
+                switchOn: {
+                    method: 'PUT',
+                    params: {
+                        value: true
+                    }
+                },
+                switchOff: {
+                    method: 'PUT',
+                    params: {
+                        value: false
+                    }
+                }
             }
         });
     }]);

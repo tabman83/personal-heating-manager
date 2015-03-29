@@ -1,19 +1,24 @@
 var moment = require('moment');
 var Heating = require('mongoose').model('Heating');
 
-function HeatingStatusController() { }
+function HeatingStatusController(heatingManager) {
+	this.heatingManager = heatingManager;
+}
 
 HeatingStatusController.prototype = {
 
-	insertStatus: function (request, reply) {
-		new Heating(request.payload).save(function (err) {
+	putStatus: function (request, reply) {
+		this.heatingManager.switch(request.value, 'manual', cb);
+
+		function cb(err) {
 			if (err) {
 				console.error(err);
-				reply( { message: 'Cannot save heating status.' } ).code(500);
+				reply( { message: 'Cannot retrieve the heating status.' } ).code(500);
 				return;
 			}
-			reply( { message: 'Success.' } );
-		});
+
+			reply({ status: 'Success' });
+		}
 	},
 
 	getStatus: function (request, reply) {

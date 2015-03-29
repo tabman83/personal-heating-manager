@@ -13,16 +13,16 @@ var nconf = require('nconf').file('./config.json');
 require('./models/');
 
 var Hapi = require('hapi');
+var SocketIO = require('socket.io');
 var mongoose = require('mongoose');
 var async = require('async');
 var readLine = require ('readline');
 var Bcrypt = require('bcrypt');
 var hapiAuthBasic = require('hapi-auth-basic');
-var mqttBroker = require('./mqtt/broker');
-var mqttLogger = require('./mqtt/logger');
-var gpioManager = require('./gpioManager/');
+var gpioManager = require('./gpioManager/')(nconf);
 var routes = require('./routes/');
-var scheduler = require('./scheduler/');
+var Scheduler = require('./scheduler/');
+var HeatingManager = require('./heatingManager/');
 
 function openDbConnection(cb) {
     mongoose.connection.on('error', function(err) {
@@ -62,6 +62,9 @@ function startHapiServer(cb) {
         port: nconf.get('web_server_port') || 3000,
         routes: { cors: true }
     });
+    var io = SocketIO.listen(server.listener);
+    var heatingManager = HeatingManager(nconf, io);
+    var scheduler = Scheduler(nconf, heatingManager);
 
     var users = nconf.get('users');
     var validate = function (username, password, callback) {
@@ -78,7 +81,7 @@ function startHapiServer(cb) {
         //server.auth.default('simple');
     });
 
-    routes(server);
+    routes(nconf, heatingManager, scheduler, server);
     // Start the server
     server.start(function(err) {
         if(err) {
@@ -113,7 +116,7 @@ if (process.platform === "win32"){
 }
 process.on('SIGINT', gracefulExit).on('SIGTERM', gracefulExit);
 
-async.series([openDbConnection, mqttBroker.start, scheduler.reloadAllSchedules, mqttLogger.start, gpioManager.start, startHapiServer], function(err, results){
+async.series([openDbConnection, startHapiServer], function(err, results){
     if(err) {
         console.error(err);
         gracefulExit();

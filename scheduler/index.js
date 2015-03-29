@@ -5,32 +5,37 @@ email:          tabman83@gmail.com
 date:           04/03/2015 02:35
 description:    scheduler
 */
-var nodeScheduler = require('node-schedule');
-var moment = require('moment');
-var mqtt    = require('mqtt');
-var nconf = require('nconf');
-var Schedule = require('mongoose').model('Schedule');
-var heatingTopic = nconf.get('mqtt_topic_heating');
 
-module.exports = new function() {
+(function () {
+	var nodeScheduler = require('node-schedule');
+	var moment = require('moment');
 
-	var self = this;
+	function Scheduler(nconf, heatingManager) {
+		if (!(this instanceof Scheduler)) return new Scheduler(nconf, heatingManager);
 
-	var scheduleFunction = function(name, type) {
-		var client = mqtt.connect('mqtt://localhost');
-		var message = new Buffer([type == 'ON' ? 1 : 0]);
+		this.nconf = nconf;
+		this.heatingManager = heatingManager;
+
+		this.reloadAllSchedules();
+	}
+
+	Scheduler.prototype.scheduleFunction = function(name, type) {
+		var value = (type == 'ON' ? 1 : 0);
 		console.log('Running schedule \''+name+'\' for '+type+' @ '+moment().format() );
-		client.publish(heatingTopic, message, function(err) {
+
+		this.heatingManager.switch(value, 'schedule', function(err) {
 			if(err) {
 				console.error('Schedule run failed: ', err);
-			} else {
-				console.log('Schedule run successfully.');
+				return;
 			}
-			client.end();
+			console.log('Schedule run successfully.');
 		});
 	}
 
-	this.reloadAllSchedules = function(cb) {
+	Scheduler.prototype.reloadAllSchedules = function(cb) {
+		var that = this;
+		var cb = cb || function() {};
+		var Schedule = require('mongoose').model('Schedule');
 		Schedule
 			.find()
 			.sort({ created: 'desc' })
@@ -45,21 +50,21 @@ module.exports = new function() {
 				return;
 			}
 			result.forEach(function(schedule) {
-				self.create(schedule);
+				that.create(schedule);
 			});
 			cb(null);
 		}
 	}
 
-	this.create = function(payload) {
+	Scheduler.prototype.create = function(payload) {
 		var rule, type;
 
 		if(payload.recurrence === 'oneTime') {
 			type = payload.type.split('to').slice(0,1);
-			nodeScheduler.scheduleJob(moment(payload.startDate).toDate(), scheduleFunction.bind(null, payload.name, type) );
+			nodeScheduler.scheduleJob(moment(payload.startDate).toDate(), this.scheduleFunction.bind(this, payload.name, type) );
 			if(payload.type === 'ONtoOFF' || payload.type === 'OFFtoON') {
 				type = payload.type.split('to').slice(-1);
-				nodeScheduler.scheduleJob(moment(payload.endDate).toDate(), scheduleFunction.bind(null, payload.name, type));
+				nodeScheduler.scheduleJob(moment(payload.endDate).toDate(), this.scheduleFunction.bind(this, payload.name, type));
 			}
 		}
 		if(payload.recurrence === 'weekly') {
@@ -68,7 +73,7 @@ module.exports = new function() {
 			rule.hour = moment(payload.startDate).hour();
 			rule.minute = moment(payload.startDate).minute();
 			type = payload.type.split('to').slice(0,1);
-			nodeScheduler.scheduleJob(rule, scheduleFunction.bind(null, payload.name, type));
+			nodeScheduler.scheduleJob(rule, this.scheduleFunction.bind(this, payload.name, type));
 
 			if(payload.type === 'ONtoOFF' || payload.type === 'OFFtoON') {
 				rule = new nodeScheduler.RecurrenceRule();
@@ -76,9 +81,11 @@ module.exports = new function() {
 				rule.hour = moment(payload.endDate).hour();
 				rule.minute = moment(payload.endDate).minute();
 				type = payload.type.split('to').slice(-1);
-				nodeScheduler.scheduleJob(rule, scheduleFunction.bind(null, payload.name, type));
+				nodeScheduler.scheduleJob(rule, this.scheduleFunction.bind(this, payload.name, type));
 			}
 		}
 	}
 
-};
+	module.exports = Scheduler;
+
+})();
